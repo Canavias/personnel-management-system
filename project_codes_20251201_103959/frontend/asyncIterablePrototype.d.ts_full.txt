@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@sec-ant/readable-stream/dist/core/asyncIterablePrototype.d.ts ===
+export declare const AsyncIterablePrototype: object;
+
+
+

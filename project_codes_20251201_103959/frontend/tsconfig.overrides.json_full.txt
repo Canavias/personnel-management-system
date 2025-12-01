@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/@babel/traverse/tsconfig.overrides.json ===
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true
+  }
+}
+
+

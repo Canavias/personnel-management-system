@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/now.d.ts ===
+import { now } from "lodash";
+export default now;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/sample.d.ts ===
+import { sample } from "lodash";
+export default sample;
+
+
+

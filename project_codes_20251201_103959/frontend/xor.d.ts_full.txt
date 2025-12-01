@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/xor.d.ts ===
+import { xor } from "lodash";
+export default xor;
+
+
+

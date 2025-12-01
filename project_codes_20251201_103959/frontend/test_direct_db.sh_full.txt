@@ -1,0 +1,30 @@
+=== ./frontend/test_direct_db.sh ===
+echo "=== 直接查询数据库状态 ==="
+
+# 首先检查当前数据库中的实际数据
+echo "当前所有成员的性别:"
+curl -s http://localhost:3000/api/members | jq '.[] | {id: .id, name: .name, gender: .gender, updated_at: .updated_at}' 2>/dev/null || curl -s http://localhost:3000/api/members | grep -o '"id":[^,]*\|"name":"[^"]*"\|"gender":"[^"]*"\|"updated_at":"[^"]*"'
+
+echo -e "\n=== 直接测试更新（绕过前端）==="
+# 直接调用API更新性别
+curl -X PUT http://localhost:3000/api/members/12 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "爱妃",
+    "gender": "女",
+    "grade": "2022级", 
+    "phone": "15165467326",
+    "email": "1903423298@qq.com",
+    "department_id": null,
+    "role_id": 1,
+    "is_active": true
+  }'
+
+echo -e "\n=== 更新后立即检查 ==="
+curl -s http://localhost:3000/api/members/12 | jq '{id: .id, name: .name, gender: .gender, updated_at: .updated_at}' 2>/dev/null || curl -s http://localhost:3000/api/members/12
+
+echo -e "\n=== 检查所有成员的最新状态 ==="
+curl -s http://localhost:3000/api/members | jq '.[] | select(.id==12) | {id: .id, name: .name, gender: .gender, updated_at: .updated_at}' 2>/dev/null || curl -s http://localhost:3000/api/members | grep -A 20 -B 5 '"id":12'
+
+
+

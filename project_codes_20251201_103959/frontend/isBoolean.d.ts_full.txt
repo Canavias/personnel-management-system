@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isBoolean.d.ts ===
+/** Returns whether the payload is a boolean */
+export declare function isBoolean(payload: unknown): payload is boolean;
+
+
+

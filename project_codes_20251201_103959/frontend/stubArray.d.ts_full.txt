@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/stubArray.d.ts ===
+import { stubArray } from "lodash";
+export default stubArray;
+
+
+

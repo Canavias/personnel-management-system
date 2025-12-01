@@ -1,0 +1,13 @@
+=== ./frontend/node_modules/npm-run-all2/eslint.config.js ===
+'use strict'
+
+module.exports = [
+  ...require('neostandard')({
+    env: ['mocha'],
+    ignores: require('neostandard').resolveIgnoresFromGitignore(),
+    ts: true,
+  }),
+]
+
+
+

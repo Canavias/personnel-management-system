@@ -1,0 +1,90 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { api } from '@/services/api'
+import { useRouter } from 'vue-router'
+
+export const useUserStore = defineStore('user', () => {
+  const user = ref<any>(null)
+  const token = ref<string | null>(localStorage.getItem('token'))
+  const isAuthenticated = ref<boolean>(!!token.value)
+  const router = useRouter()
+
+  const login = async (credentials: { username: string; password: string }) => {
+    try {
+      console.log('🔐 Attempting login...')
+      const response = await api.post('/auth/login', credentials)
+      console.log('✅ Login response:', response.data)
+      
+      if (response.data.success && response.data.data?.token) {
+        const authToken = response.data.data.token
+        const userData = response.data.data.user
+        
+        // 保存token和用户信息
+        token.value = authToken
+        user.value = userData
+        isAuthenticated.value = true
+        localStorage.setItem('token', authToken)
+        
+        console.log('✅ Login successful, redirecting...')
+        router.push('/')
+        
+        return response.data
+      } else {
+        throw new Error(response.data.message || 'Login failed')
+      }
+    } catch (error: any) {
+      console.error('❌ Login failed:', error)
+      throw error
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await api.post('/auth/logout')
+    } catch (error) {
+      console.error('Logout request failed:', error)
+    } finally {
+      user.value = null
+      token.value = null
+      isAuthenticated.value = false
+      localStorage.removeItem('token')
+      router.push('/login')
+    }
+  }
+
+  const getCurrentUser = async () => {
+    try {
+      const response = await api.get('/auth/me')
+      if (response.data.success) {
+        user.value = response.data.data
+        return response.data.data
+      } else {
+        throw new Error(response.data.message || 'Failed to get user info')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const initialize = async () => {
+    if (token.value) {
+      try {
+        await getCurrentUser()
+        console.log('✅ User initialized successfully')
+      } catch (error) {
+        console.error('❌ User initialization failed:', error)
+        logout()
+      }
+    }
+  }
+
+  return {
+    user,
+    token,
+    isAuthenticated,
+    login,
+    logout,
+    getCurrentUser,
+    initialize
+  }
+})

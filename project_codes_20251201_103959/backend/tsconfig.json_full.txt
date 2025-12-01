@@ -1,0 +1,13 @@
+=== ./backend/node_modules/side-channel-weakmap/tsconfig.json ===
+{
+	"extends": "@ljharb/tsconfig",
+	"compilerOptions": {
+		"target": "es2021",
+	},
+	"exclude": [
+		"coverage",
+	],
+}
+
+
+

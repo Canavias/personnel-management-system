@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/flowRight.d.ts ===
+import { flowRight } from "lodash";
+export default flowRight;
+
+
+

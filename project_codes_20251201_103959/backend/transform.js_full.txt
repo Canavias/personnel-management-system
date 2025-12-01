@@ -1,0 +1,5 @@
+=== ./backend/node_modules/duplexer2/node_modules/readable-stream/transform.js ===
+module.exports = require('./readable').Transform
+
+
+

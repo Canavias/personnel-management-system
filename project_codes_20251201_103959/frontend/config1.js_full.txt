@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/config1.js ===
+'use strict'
+
+const appendResult = require('./lib/util').appendResult
+appendResult(String(process.env.npm_config_test))
+
+
+

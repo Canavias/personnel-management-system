@@ -1,0 +1,5 @@
+=== ./frontend/dist/assets/DashboardView-DVab18xu.css ===
+.dashboard[data-v-5b0cf018]{padding:20px}.stat-card[data-v-5b0cf018]{margin-bottom:20px}.stat-content[data-v-5b0cf018]{display:flex;align-items:center}.stat-icon[data-v-5b0cf018]{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:15px;font-size:24px;color:#fff}.system-status[data-v-5b0cf018]{background-color:#67c23a}.total-members[data-v-5b0cf018]{background-color:#409eff}.total-departments[data-v-5b0cf018]{background-color:#e6a23c}.active-users[data-v-5b0cf018]{background-color:#f56c6c}.stat-info[data-v-5b0cf018]{flex:1}.stat-value[data-v-5b0cf018]{font-size:24px;font-weight:700;margin-bottom:5px}.stat-label[data-v-5b0cf018]{color:#909399;font-size:14px}.recent-activity[data-v-5b0cf018]{margin-top:20px}
+
+
+

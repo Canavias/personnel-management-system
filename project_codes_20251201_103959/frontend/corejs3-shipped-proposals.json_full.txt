@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/@babel/compat-data/data/corejs3-shipped-proposals.json ===
+[
+  "esnext.promise.all-settled",
+  "esnext.string.match-all",
+  "esnext.global-this"
+]
+
+
+

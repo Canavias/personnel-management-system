@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@volar/language-core/lib/linkedCodeMap.d.ts ===
+import { SourceMap } from '@volar/source-map';
+export declare class LinkedCodeMap extends SourceMap<any> {
+    getLinkedOffsets(start: number): Generator<number, void, unknown>;
+}
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toUpper.d.ts ===
+import { toUpper } from "lodash";
+export default toUpper;
+
+
+

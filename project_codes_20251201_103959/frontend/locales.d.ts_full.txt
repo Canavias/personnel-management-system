@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/element-plus/lib/locales.d.ts ===
+export * from 'element-plus/es/locale';
+
+
+

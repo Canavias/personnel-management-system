@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/defaultsDeepAll.d.ts ===
+import { defaultsDeepAll } from "../fp";
+export = defaultsDeepAll;
+
+
+

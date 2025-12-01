@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/takeLast.d.ts ===
+import { takeLast } from "../fp";
+export = takeLast;
+
+
+

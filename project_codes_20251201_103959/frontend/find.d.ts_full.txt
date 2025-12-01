@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/find.d.ts ===
+import { find } from "lodash";
+export default find;
+
+
+

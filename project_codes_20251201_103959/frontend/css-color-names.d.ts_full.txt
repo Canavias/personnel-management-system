@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@ctrl/tinycolor/dist/css-color-names.d.ts ===
+/**
+ * @hidden
+ */
+export declare const names: Record<string, string>;
+
+
+

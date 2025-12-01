@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/cloneDeep.d.ts ===
+import { cloneDeep } from "lodash";
+export default cloneDeep;
+
+
+

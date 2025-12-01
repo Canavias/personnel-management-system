@@ -1,0 +1,11 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/.eslintrc.json ===
+{
+    "rules": {
+        "no-console": 0,
+        "no-process-env": 0,
+        "no-process-exit": 0
+    }
+}
+
+
+

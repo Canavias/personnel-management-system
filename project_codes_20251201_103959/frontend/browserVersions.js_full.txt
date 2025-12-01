@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/caniuse-lite/dist/unpacker/browserVersions.js ===
+module.exports.browserVersions = require('../../data/browserVersions')
+
+
+

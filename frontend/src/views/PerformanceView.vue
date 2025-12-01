@@ -1,0 +1,16 @@
+<template>
+  <div class="performance">
+    <h1>绩效管理</h1>
+    <p>绩效管理功能开发中...</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+// 绩效管理逻辑后续开发
+</script>
+
+<style scoped>
+.performance {
+  padding: 20px;
+}
+</style>

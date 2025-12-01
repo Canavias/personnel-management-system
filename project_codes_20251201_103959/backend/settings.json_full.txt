@@ -1,0 +1,6 @@
+=== ./backend/node_modules/bcryptjs/.vscode/settings.json ===
+{
+    "vsicons.presets.angular": false
+}
+
+

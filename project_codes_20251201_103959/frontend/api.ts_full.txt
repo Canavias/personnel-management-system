@@ -1,0 +1,85 @@
+=== ./frontend/src/services/api.ts ===
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+import router from '@/router'
+
+// 关键修复：使用正确的baseURL
+// 前端运行在5173端口，但需要代理到3000端口
+// Vite代理配置应该转发 /api 到 http://localhost:3000/api
+const axiosInstance = axios.create({
+  baseURL: '/api',  // 使用相对路径，让Vite代理处理
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+// 请求拦截器 - 添加详细日志
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    
+    console.log('🚀 前端请求详情:')
+    console.log('  方法:', config.method?.toUpperCase())
+    console.log('  完整URL:', config.baseURL + (config.url || ''))
+    console.log('  请求数据:', config.data ? JSON.stringify(config.data, null, 2) : '无')
+    
+    return config
+  },
+  (error) => {
+    console.error('❌ 请求配置错误:', error)
+    return Promise.reject(error)
+  }
+)
+
+// 响应拦截器
+axiosInstance.interceptors.response.use(
+  (response) => {
+    console.log('✅ 前端收到响应:')
+    console.log('  状态码:', response.status)
+    console.log('  响应数据:', JSON.stringify(response.data, null, 2))
+    return response
+  },
+  (error) => {
+    console.error('❌ 前端请求失败详情:')
+    console.error('  错误信息:', error.message)
+    console.error('  状态码:', error.response?.status)
+    console.error('  错误数据:', error.response?.data)
+    console.error('  请求URL:', error.config?.url)
+    console.error('  请求方法:', error.config?.method)
+    console.error('  请求数据:', error.config?.data)
+    
+    if (error.response?.status === 404) {
+      console.error('🚨 404错误！可能原因:')
+      console.error('  1. 后端API路径不存在')
+      console.error('  2. 代理配置错误')
+      console.error('  3. 后端路由未注册')
+      console.error('  建议检查:')
+      console.error('    - 后端routes/members.js是否有PUT路由')
+      console.error('    - Vite代理配置是否正确')
+      console.error('    - 后端服务器是否运行在3000端口')
+    }
+    
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token')
+      ElMessage.error('登录已过期，请重新登录')
+      router.push('/login')
+    } else if (error.code === 'ERR_NETWORK') {
+      ElMessage.error('无法连接到后端服务器')
+    } else if (error.response?.data?.message) {
+      ElMessage.error(error.response.data.message)
+    } else {
+      ElMessage.error('请求失败: ' + error.message)
+    }
+    
+    return Promise.reject(error)
+  }
+)
+
+export const api = axiosInstance
+
+
+

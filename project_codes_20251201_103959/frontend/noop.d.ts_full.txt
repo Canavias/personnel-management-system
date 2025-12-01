@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/noop.d.ts ===
+import { noop } from "lodash";
+export default noop;
+
+
+

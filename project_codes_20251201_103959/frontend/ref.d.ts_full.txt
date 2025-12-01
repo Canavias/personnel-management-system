@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/es-errors/ref.d.ts ===
+declare const ReferenceError: ReferenceErrorConstructor;
+
+export = ReferenceError;
+
+
+

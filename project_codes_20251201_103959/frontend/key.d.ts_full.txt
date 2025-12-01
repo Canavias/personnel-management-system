@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/element-plus/lib/constants/key.d.ts ===
+export declare const INSTALLED_KEY: unique symbol;
+
+
+

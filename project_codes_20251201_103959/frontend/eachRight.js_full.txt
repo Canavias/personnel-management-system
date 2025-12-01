@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash-es/eachRight.js ===
+export { default } from './forEachRight.js'
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/lte.d.ts ===
+import { lte } from "lodash";
+export default lte;
+
+
+

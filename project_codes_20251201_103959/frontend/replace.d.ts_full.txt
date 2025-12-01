@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/replace.d.ts ===
+import { replace } from "lodash";
+export default replace;
+
+
+

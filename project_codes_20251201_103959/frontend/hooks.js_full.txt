@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/vue-router/node_modules/@vue/devtools-api/lib/esm/api/hooks.js ===
+export {};
+
+
+

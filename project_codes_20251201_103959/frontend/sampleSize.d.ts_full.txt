@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/sampleSize.d.ts ===
+import { sampleSize } from "lodash";
+export default sampleSize;
+
+
+

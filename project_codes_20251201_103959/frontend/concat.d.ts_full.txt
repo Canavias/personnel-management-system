@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/concat.d.ts ===
+import { concat } from "lodash";
+export default concat;
+
+
+

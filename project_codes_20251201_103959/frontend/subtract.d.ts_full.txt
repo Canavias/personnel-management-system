@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/subtract.d.ts ===
+import { subtract } from "lodash";
+export default subtract;
+
+
+

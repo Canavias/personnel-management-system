@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/conformsTo.d.ts ===
+import { conformsTo } from "lodash";
+export default conformsTo;
+
+
+

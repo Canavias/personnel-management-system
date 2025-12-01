@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/math-intrinsics/mod.d.ts ===
+declare function mod(number: number, modulo: number): number;
+
+export = mod;
+
+

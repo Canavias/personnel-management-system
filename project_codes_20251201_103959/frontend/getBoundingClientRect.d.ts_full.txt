@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.d.ts ===
+import type { ClientRectObject, VirtualElement } from "../types";
+export default function getBoundingClientRect(element: Element | VirtualElement, includeScale?: boolean): ClientRectObject;
+
+
+

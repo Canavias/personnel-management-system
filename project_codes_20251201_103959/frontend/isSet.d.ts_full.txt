@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isSet.d.ts ===
+/** Returns whether the payload is a Set */
+export declare function isSet(payload: unknown): payload is Set<unknown>;
+
+
+

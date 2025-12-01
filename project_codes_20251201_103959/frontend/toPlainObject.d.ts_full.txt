@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toPlainObject.d.ts ===
+import { toPlainObject } from "lodash";
+export default toPlainObject;
+
+
+

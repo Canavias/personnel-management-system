@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/overArgs.d.ts ===
+import { overArgs } from "lodash";
+export default overArgs;
+
+
+

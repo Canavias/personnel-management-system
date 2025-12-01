@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/capitalize.d.ts ===
+import { capitalize } from "lodash";
+export default capitalize;
+
+
+

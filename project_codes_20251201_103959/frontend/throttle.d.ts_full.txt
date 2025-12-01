@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@types/lodash-es/throttle.d.ts ===
+import { throttle, ThrottleSettings } from "lodash";
+
+export { ThrottleSettings };
+export default throttle;
+
+
+

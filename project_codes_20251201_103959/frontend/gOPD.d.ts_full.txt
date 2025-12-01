@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/gopd/gOPD.d.ts ===
+export = Object.getOwnPropertyDescriptor;
+
+
+

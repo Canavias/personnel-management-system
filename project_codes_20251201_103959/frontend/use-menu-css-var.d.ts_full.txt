@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/menu/src/use-menu-css-var.d.ts ===
+import type { MenuProps } from './menu';
+export declare const useMenuCssVar: (props: MenuProps, level: number) => import("vue").ComputedRef<Record<string, string>>;
+
+
+

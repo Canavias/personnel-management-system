@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/words.d.ts ===
+import { words } from "lodash";
+export default words;
+
+
+

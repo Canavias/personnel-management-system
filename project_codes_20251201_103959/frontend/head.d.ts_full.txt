@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/head.d.ts ===
+import { head } from "lodash";
+export default head;
+
+
+

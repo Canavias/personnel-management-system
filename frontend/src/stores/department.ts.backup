@@ -1,0 +1,83 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { api } from '@/services/api'
+
+interface Department {
+  id: number
+  name: string
+  description?: string
+  created_at?: string
+  updated_at?: string
+}
+
+interface DepartmentStats {
+  department_id: number
+  department_name: string
+  member_count: number
+}
+
+export const useDepartmentStore = defineStore('department', () => {
+  const departments = ref<Department[]>([])
+  const departmentStats = ref<DepartmentStats[]>([])
+  const allDepartments = ref<Department[]>([])
+  const loading = ref(false)
+
+  // 获取所有部门
+  const fetchDepartments = async () => {
+    loading.value = true
+    try {
+      const response = await api.get('/departments')
+      if (response.data.success) {
+        departments.value = response.data.data
+        allDepartments.value = response.data.data
+      }
+    } catch (error) {
+      console.error('获取部门列表失败:', error)
+      throw error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 获取部门统计信息
+  const fetchDepartmentStats = async () => {
+    try {
+      const response = await api.get('/departments/stats')
+      if (response.data.success) {
+        departmentStats.value = response.data.data
+      }
+    } catch (error) {
+      console.error('获取部门统计失败:', error)
+      throw error
+    }
+  }
+
+  // 获取所有部门（兼容旧代码）
+  const fetchAllDepartments = async () => {
+    return fetchDepartments()
+  }
+
+  // 获取部门详情
+  const fetchDepartmentDetail = async (id: number) => {
+    try {
+      const response = await api.get(`/departments/${id}`)
+      if (response.data.success) {
+        return response.data.data
+      }
+    } catch (error) {
+      console.error('获取部门详情失败:', error)
+      throw error
+    }
+  }
+
+  return {
+    departments,
+    departmentStats,
+    allDepartments,
+    loading,
+    fetchDepartments,
+    fetchDepartmentStats,
+    fetchAllDepartments,
+    fetchDepartmentDetail
+  }
+})

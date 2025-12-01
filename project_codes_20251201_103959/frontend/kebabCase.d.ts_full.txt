@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/kebabCase.d.ts ===
+import { kebabCase } from "lodash";
+export default kebabCase;
+
+
+

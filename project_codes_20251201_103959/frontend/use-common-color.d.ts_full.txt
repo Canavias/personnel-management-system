@@ -1,0 +1,15 @@
+=== ./frontend/node_modules/element-plus/lib/components/color-picker-panel/src/composables/use-common-color.d.ts ===
+import Color from '../utils/color';
+type CommonColorProps = {
+    modelValue?: string | null;
+    showAlpha: boolean;
+    colorFormat?: string;
+};
+type CommonColorEmits = (event: 'update:modelValue', ...args: any[]) => void;
+export declare const useCommonColor: <P extends CommonColorProps, E extends CommonColorEmits>(props: P, emit: E) => {
+    color: Color;
+};
+export {};
+
+
+

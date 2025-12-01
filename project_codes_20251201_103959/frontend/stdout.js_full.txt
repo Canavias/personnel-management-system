@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/stdout.js ===
+'use strict'
+
+process.stdout.write('STDOUT')
+
+
+

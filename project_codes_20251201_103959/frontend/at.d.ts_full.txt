@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/at.d.ts ===
+import { at } from "lodash";
+export default at;
+
+
+

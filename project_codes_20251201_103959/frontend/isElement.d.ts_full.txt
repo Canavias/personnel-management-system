@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isElement.d.ts ===
+import { isElement } from "lodash";
+export default isElement;
+
+
+

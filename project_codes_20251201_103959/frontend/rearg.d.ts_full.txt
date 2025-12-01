@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/rearg.d.ts ===
+import { rearg } from "lodash";
+export default rearg;
+
+
+

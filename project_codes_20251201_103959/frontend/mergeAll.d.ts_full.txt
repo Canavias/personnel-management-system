@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/mergeAll.d.ts ===
+import { mergeAll } from "../fp";
+export = mergeAll;
+
+
+

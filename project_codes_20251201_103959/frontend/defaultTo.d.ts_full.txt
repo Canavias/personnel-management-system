@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/defaultTo.d.ts ===
+import { defaultTo } from "lodash";
+export default defaultTo;
+
+
+

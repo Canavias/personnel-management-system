@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/dayjs/plugin/devHelper.d.ts ===
+import { PluginFunc } from 'dayjs'
+
+declare const plugin: PluginFunc
+export = plugin
+
+
+

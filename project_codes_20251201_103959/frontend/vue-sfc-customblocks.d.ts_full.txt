@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@vue/language-core/lib/plugins/vue-sfc-customblocks.d.ts ===
+import type { VueLanguagePlugin } from '../types';
+declare const plugin: VueLanguagePlugin;
+export default plugin;
+
+
+

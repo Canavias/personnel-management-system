@@ -1,0 +1,13 @@
+=== ./frontend/node_modules/es-set-tostringtag/tsconfig.json ===
+{
+	"extends": "@ljharb/tsconfig",
+	"compilerOptions": {
+		"target": "es2021",
+	},
+	"exclude": [
+		"coverage",
+	],
+}
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/forOwnRight.d.ts ===
+import { forOwnRight } from "lodash";
+export default forOwnRight;
+
+
+

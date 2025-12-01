@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/anyPass.js ===
+module.exports = require('./overSome');
+
+
+

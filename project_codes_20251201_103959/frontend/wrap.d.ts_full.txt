@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/wrap.d.ts ===
+import { wrap } from "lodash";
+export default wrap;
+
+
+

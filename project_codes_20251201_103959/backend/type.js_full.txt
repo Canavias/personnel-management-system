@@ -1,0 +1,8 @@
+=== ./backend/node_modules/es-errors/type.js ===
+'use strict';
+
+/** @type {import('./type')} */
+module.exports = TypeError;
+
+
+

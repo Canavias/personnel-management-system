@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/flatMapDeep.d.ts ===
+import { flatMapDeep } from "lodash";
+export default flatMapDeep;
+
+
+

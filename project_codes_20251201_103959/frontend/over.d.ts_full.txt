@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/over.d.ts ===
+import { over } from "lodash";
+export default over;
+
+
+

@@ -1,0 +1,10 @@
+=== ./frontend/node_modules/@types/lodash-es/date.default.d.ts ===
+import now from "./now";
+
+declare const defaultExport: {
+    now: typeof now;
+};
+export default defaultExport;
+
+
+

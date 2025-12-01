@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/F.js ===
+module.exports = require('./stubFalse');
+
+
+

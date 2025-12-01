@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/partition.d.ts ===
+import { partition } from "lodash";
+export default partition;
+
+
+

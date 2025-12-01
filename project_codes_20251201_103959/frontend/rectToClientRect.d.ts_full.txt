@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/rectToClientRect.d.ts ===
+import type { Rect, ClientRectObject } from "../types";
+export default function rectToClientRect(rect: Rect): ClientRectObject;
+
+
+

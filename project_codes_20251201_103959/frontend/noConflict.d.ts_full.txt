@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/noConflict.d.ts ===
+import { noConflict } from "../fp";
+export = noConflict;
+
+
+

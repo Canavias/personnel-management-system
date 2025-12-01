@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getHTMLElementScroll.d.ts ===
+export default function getHTMLElementScroll(element: HTMLElement): {
+    scrollLeft: number;
+    scrollTop: number;
+};
+
+
+

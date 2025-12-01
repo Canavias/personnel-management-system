@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/spread.d.ts ===
+import { spread } from "lodash";
+export default spread;
+
+
+

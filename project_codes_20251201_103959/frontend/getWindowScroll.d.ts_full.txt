@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.d.ts ===
+import type { Window } from "../types";
+export default function getWindowScroll(node: Node | Window): {
+    scrollLeft: any;
+    scrollTop: any;
+};
+
+
+

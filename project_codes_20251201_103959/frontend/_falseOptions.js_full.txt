@@ -1,0 +1,11 @@
+=== ./frontend/node_modules/lodash/fp/_falseOptions.js ===
+module.exports = {
+  'cap': false,
+  'curry': false,
+  'fixed': false,
+  'immutable': false,
+  'rearg': false
+};
+
+
+

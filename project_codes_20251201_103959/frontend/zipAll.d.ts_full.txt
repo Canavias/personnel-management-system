@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/zipAll.d.ts ===
+import { zipAll } from "../fp";
+export = zipAll;
+
+
+

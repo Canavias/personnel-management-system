@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/random.d.ts ===
+import { random } from "lodash";
+export default random;
+
+
+

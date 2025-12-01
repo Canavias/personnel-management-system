@@ -1,0 +1,10 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getViewportRect.d.ts ===
+export default function getViewportRect(element: Element): {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+};
+
+
+

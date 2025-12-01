@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/complement.d.ts ===
+import { complement } from "../fp";
+export = complement;
+
+
+

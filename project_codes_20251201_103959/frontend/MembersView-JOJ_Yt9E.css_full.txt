@@ -1,0 +1,5 @@
+=== ./frontend/dist/assets/MembersView-JOJ_Yt9E.css ===
+.dialog-footer[data-v-ffa1b3fc]{display:flex;justify-content:flex-end;gap:12px}.members[data-v-ccf325e1]{padding:20px}.header[data-v-ccf325e1]{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.filter-card[data-v-ccf325e1]{margin-bottom:20px}.filter-row[data-v-ccf325e1]{display:flex;align-items:center}.stats-row[data-v-ccf325e1]{margin-bottom:20px}.table-card[data-v-ccf325e1]{margin-top:20px}.pagination[data-v-ccf325e1]{margin-top:20px;display:flex;justify-content:flex-end}
+
+
+

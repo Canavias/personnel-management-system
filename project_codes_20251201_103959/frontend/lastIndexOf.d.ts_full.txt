@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/lastIndexOf.d.ts ===
+import { lastIndexOf } from "lodash";
+export default lastIndexOf;
+
+
+

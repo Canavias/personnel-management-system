@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/getOppositeVariationPlacement.d.ts ===
+import type { Placement } from "../enums";
+export default function getOppositeVariationPlacement(placement: Placement): Placement;
+
+
+

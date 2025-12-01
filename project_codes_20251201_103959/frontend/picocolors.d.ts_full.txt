@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/picocolors/picocolors.d.ts ===
+import { Colors } from "./types"
+
+declare const picocolors: Colors & { createColors: (enabled?: boolean) => Colors }
+
+export = picocolors
+
+
+

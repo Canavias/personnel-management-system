@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/indexBy.d.ts ===
+import { indexBy } from "../fp";
+export = indexBy;
+
+
+

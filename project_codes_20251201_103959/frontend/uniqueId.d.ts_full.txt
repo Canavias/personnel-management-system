@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/uniqueId.d.ts ===
+import { uniqueId } from "lodash";
+export default uniqueId;
+
+
+

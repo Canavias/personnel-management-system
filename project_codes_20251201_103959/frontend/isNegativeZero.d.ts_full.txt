@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/math-intrinsics/isNegativeZero.d.ts ===
+declare function isNegativeZero(x: unknown): boolean;
+
+export = isNegativeZero;
+
+

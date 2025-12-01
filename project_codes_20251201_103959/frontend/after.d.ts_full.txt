@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/after.d.ts ===
+import { after } from "lodash";
+export default after;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/chain.d.ts ===
+import { chain } from "lodash";
+export default chain;
+
+
+

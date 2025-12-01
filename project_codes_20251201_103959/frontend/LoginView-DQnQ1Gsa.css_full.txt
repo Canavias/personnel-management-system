@@ -1,0 +1,5 @@
+=== ./frontend/dist/assets/LoginView-DQnQ1Gsa.css ===
+.login-container[data-v-0b87537a]{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2)}.login-form[data-v-0b87537a]{background:#fff;padding:40px;border-radius:10px;box-shadow:0 10px 25px #0000001a;width:400px;text-align:center}.login-form h2[data-v-0b87537a]{margin-bottom:10px;color:#333}.subtitle[data-v-0b87537a]{color:#666;margin-bottom:30px}.login-form-content[data-v-0b87537a]{margin-bottom:20px}.login-button[data-v-0b87537a]{width:100%;margin-top:10px}.test-account[data-v-0b87537a]{background:#f5f7fa;padding:15px;border-radius:5px;font-size:14px;color:#666}.test-account p[data-v-0b87537a]{margin:5px 0}
+
+
+

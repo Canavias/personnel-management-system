@@ -1,0 +1,150 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { api } from '@/services/api'
+
+interface Member {
+  id: number
+  name: string
+  gender: string
+  grade: string
+  student_id?: string
+  phone?: string
+  email?: string
+  department_id: number | null
+  department_name?: string
+  role_id?: number
+  role_title?: string  // 修复：使用 role_title
+  is_active: boolean
+  join_date?: string
+  created_at: string
+  updated_at: string
+}
+
+interface MemberForm {
+  name: string
+  gender: string
+  grade: string
+  student_id?: string
+  phone?: string
+  email?: string
+  department_id: number | null
+  role_id?: number | null
+}
+
+export const useMemberStore = defineStore('member', () => {
+  const members = ref<Member[]>([])
+  const loading = ref(false)
+  const total = ref(0)
+
+  const fetchMembers = async () => {
+    loading.value = true
+    try {
+      const response = await api.get('/members')
+      console.log('✅ 成员数据加载成功，使用 role_title 字段')
+      members.value = response.data
+      total.value = response.data.length
+    } catch (error) {
+      console.error('获取成员列表失败:', error)
+      throw error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 其他方法保持不变...
+  const searchMembers = async (keyword: string) => {
+    if (!keyword.trim()) {
+      await fetchMembers()
+      return
+    }
+    loading.value = true
+    try {
+      const response = await api.get(`/members/search/${encodeURIComponent(keyword)}`)
+      members.value = response.data
+      total.value = response.data.length
+    } catch (error) {
+      console.error('搜索成员失败:', error)
+      throw error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const addMember = async (memberData: MemberForm) => {
+    try {
+      const formattedData = {
+        name: memberData.name,
+        gender: memberData.gender,
+        grade: memberData.grade,
+        student_id: memberData.student_id || null,
+        phone: memberData.phone || null,
+        email: memberData.email || null,
+        department_id: memberData.department_id,
+        role_id: memberData.role_id || null
+      }
+      const response = await api.post('/members', formattedData)
+      await fetchMembers()
+      return response.data
+    } catch (error) {
+      console.error('添加成员失败:', error)
+      throw error
+    }
+  }
+
+  const updateMember = async (id: number, memberData: MemberForm) => {
+    try {
+      const formattedData = {
+        name: memberData.name,
+        gender: memberData.gender,
+        grade: memberData.grade,
+        student_id: memberData.student_id || null,
+        phone: memberData.phone || null,
+        email: memberData.email || null,
+        department_id: memberData.department_id,
+        role_id: memberData.role_id || null,
+        is_active: true
+      }
+      const response = await api.put(`/members/${id}`, formattedData)
+      await fetchMembers()
+      return response.data
+    } catch (error) {
+      console.error('更新成员失败:', error)
+      throw error
+    }
+  }
+
+  const deleteMember = async (id: number) => {
+    try {
+      await api.delete(`/members/${id}`)
+      await fetchMembers()
+    } catch (error) {
+      console.error('删除成员失败:', error)
+      throw error
+    }
+  }
+
+  const fetchMembersByDepartment = async (departmentId: number) => {
+    loading.value = true
+    try {
+      const response = await api.get(`/members/department/${departmentId}`)
+      return response.data
+    } catch (error) {
+      console.error('获取部门成员失败:', error)
+      throw error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    members,
+    loading,
+    total,
+    fetchMembers,
+    searchMembers,
+    addMember,
+    updateMember,
+    deleteMember,
+    fetchMembersByDepartment
+  }
+})

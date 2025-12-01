@@ -1,0 +1,7 @@
+=== ./frontend/.vscode/extensions.json ===
+{
+  "recommendations": ["Vue.volar"]
+}
+
+
+

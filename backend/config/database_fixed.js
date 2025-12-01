@@ -1,0 +1,55 @@
+const mysql = require('mysql2');
+
+const dbConfig = {
+  user: process.env.DB_USER || 'canavias_admin',
+  password: process.env.DB_PASSWORD || 'rw7719lxy',
+  database: process.env.DB_NAME || 'personnel_management_system',
+  socketPath: process.env.DB_SOCKET || '/run/mysqld/mysqld.sock',
+  charset: 'utf8mb4',
+  timezone: '+08:00',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+};
+
+const pool = mysql.createPool(dbConfig);
+
+// 在获取连接时设置字符集
+pool.on('connection', (connection) => {
+  connection.query("SET NAMES 'utf8mb4'");
+  connection.query("SET CHARACTER SET 'utf8mb4'");
+  connection.query("SET character_set_connection = 'utf8mb4'");
+  connection.query("SET character_set_client = 'utf8mb4'");
+  connection.query("SET character_set_results = 'utf8mb4'");
+});
+
+// 测试连接
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error('❌ 数据库连接失败:', err.message);
+    console.error('🔧 连接配置:', {
+      user: dbConfig.user,
+      database: dbConfig.database,
+      socketPath: dbConfig.socketPath
+    });
+    return;
+  }
+  console.log('✅ 数据库连接成功 - 使用UTF8字符集');
+  connection.query("SHOW VARIABLES LIKE 'character_set%'", (err, results) => {
+    if (err) {
+      console.error('字符集查询失败:', err);
+    } else {
+      console.log('🔧 当前字符集配置:');
+      results.forEach(row => {
+        if (row.Variable_name.includes('character_set')) {
+          console.log(`  ${row.Variable_name}: ${row.Value}`);
+        }
+      });
+    }
+    connection.release();
+  });
+});
+
+module.exports = {
+  pool: pool.promise()
+};

@@ -1,0 +1,4 @@
+=== ./frontend/node_modules/axios/lib/env/data.js ===
+export const VERSION = "1.13.2";
+
+

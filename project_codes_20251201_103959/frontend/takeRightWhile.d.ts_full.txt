@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/takeRightWhile.d.ts ===
+import { takeRightWhile } from "lodash";
+export default takeRightWhile;
+
+
+

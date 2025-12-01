@@ -1,0 +1,11 @@
+=== ./frontend/node_modules/element-plus/lib/components/checkbox/src/composables/use-checkbox-model.d.ts ===
+import type { CheckboxProps } from '../checkbox';
+export declare const useCheckboxModel: (props: CheckboxProps) => {
+    model: import("vue").WritableComputedRef<any>;
+    isGroup: import("vue").ComputedRef<boolean>;
+    isLimitExceeded: import("vue").Ref<boolean>;
+};
+export type CheckboxModel = ReturnType<typeof useCheckboxModel>;
+
+
+

@@ -1,0 +1,11 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/output-with-delay.js ===
+'use strict'
+
+const text = process.argv[2]
+const timeout = process.argv[3]
+
+process.stdout.write(`[${text}]`)
+setTimeout(() => process.stdout.write(`__[${text}]\n`), timeout)
+
+
+

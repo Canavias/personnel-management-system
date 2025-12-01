@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/invokeArgsMap.d.ts ===
+import { invokeArgsMap } from "../fp";
+export = invokeArgsMap;
+
+
+

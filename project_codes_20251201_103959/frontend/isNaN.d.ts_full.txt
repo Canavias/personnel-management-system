@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isNaN.d.ts ===
+import { isNaN } from "lodash";
+export default isNaN;
+
+
+

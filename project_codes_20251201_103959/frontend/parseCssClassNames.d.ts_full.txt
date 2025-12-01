@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@vue/language-core/lib/utils/parseCssClassNames.d.ts ===
+export declare function parseCssClassNames(css: string): Generator<{
+    offset: number;
+    text: string;
+}, void, unknown>;
+
+
+

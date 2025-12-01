@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/breadcrumb/style/css.d.ts ===
+import 'element-plus/es/components/base/style/css';
+import 'element-plus/theme-chalk/el-breadcrumb.css';
+
+
+

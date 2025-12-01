@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/vue/compiler-sfc/register-ts.js ===
+if (typeof require !== 'undefined') {
+  require('@vue/compiler-sfc').registerTS(() => require('typescript'))
+}
+
+
+

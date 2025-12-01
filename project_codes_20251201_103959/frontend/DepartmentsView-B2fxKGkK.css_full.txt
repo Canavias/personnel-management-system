@@ -1,0 +1,5 @@
+=== ./frontend/dist/assets/DepartmentsView-B2fxKGkK.css ===
+.departments[data-v-771a9c92]{padding:20px}.header[data-v-771a9c92]{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.stats-row[data-v-771a9c92],.stat-card[data-v-771a9c92]{margin-bottom:20px}.stat-content[data-v-771a9c92]{display:flex;align-items:center;padding:10px}.dept-icon[data-v-771a9c92]{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:15px;color:#fff;font-size:20px}.dept-info[data-v-771a9c92]{flex:1}.dept-name[data-v-771a9c92]{font-size:16px;font-weight:700;margin-bottom:5px}.member-count[data-v-771a9c92]{color:#606266;font-size:14px}.details-card[data-v-771a9c92]{margin-top:20px}
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/valuesIn.d.ts ===
+import { valuesIn } from "lodash";
+export default valuesIn;
+
+
+

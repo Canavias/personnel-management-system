@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@ctrl/tinycolor/dist/module/interfaces.js ===
+export {};
+
+
+

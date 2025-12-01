@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/es-errors/uri.d.ts ===
+declare const URIError: URIErrorConstructor;
+
+export = URIError;
+
+
+

@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/lodash/fp/invokeArgsMap.js ===
+var convert = require('./convert'),
+    func = convert('invokeArgsMap', require('../invokeMap'));
+
+func.placeholder = require('./placeholder');
+module.exports = func;
+
+
+

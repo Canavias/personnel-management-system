@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/stubString.d.ts ===
+import { stubString } from "lodash";
+export default stubString;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/pipe.d.ts ===
+import { pipe } from "../fp";
+export = pipe;
+
+
+

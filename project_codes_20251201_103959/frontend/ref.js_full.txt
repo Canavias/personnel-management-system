@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/es-errors/ref.js ===
+'use strict';
+
+/** @type {import('./ref')} */
+module.exports = ReferenceError;
+
+
+

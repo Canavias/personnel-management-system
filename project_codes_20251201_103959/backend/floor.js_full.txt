@@ -1,0 +1,8 @@
+=== ./backend/node_modules/math-intrinsics/floor.js ===
+'use strict';
+
+/** @type {import('./floor')} */
+module.exports = Math.floor;
+
+
+

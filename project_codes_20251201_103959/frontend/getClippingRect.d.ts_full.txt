@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getClippingRect.d.ts ===
+import type { ClientRectObject } from "../types";
+import type { Boundary, RootBoundary } from "../enums";
+export default function getClippingRect(element: Element, boundary: Boundary, rootBoundary: RootBoundary): ClientRectObject;
+
+
+

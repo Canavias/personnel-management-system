@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/axios/lib/platform/browser/classes/URLSearchParams.js ===
+'use strict';
+
+import AxiosURLSearchParams from '../../../helpers/AxiosURLSearchParams.js';
+export default typeof URLSearchParams !== 'undefined' ? URLSearchParams : AxiosURLSearchParams;
+
+
+

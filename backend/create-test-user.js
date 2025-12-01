@@ -1,0 +1,27 @@
+const bcrypt = require('bcryptjs');
+const db = require('./config/database');
+
+async function createTestUser() {
+  try {
+    const hashedPassword = await bcrypt.hash('123456', 10);
+    
+    const [result] = await db.pool.execute(
+      'INSERT INTO users (username, password, email, created_at) VALUES (?, ?, ?, NOW())',
+      ['test', hashedPassword, 'test@example.com']
+    );
+    
+    console.log('✅ 测试用户创建成功: test / 123456');
+    console.log('用户ID:', result.insertId);
+    
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      console.log('ℹ️ 测试用户已存在');
+    } else {
+      console.error('❌ 创建测试用户失败:', error.message);
+    }
+  } finally {
+    process.exit();
+  }
+}
+
+createTestUser();

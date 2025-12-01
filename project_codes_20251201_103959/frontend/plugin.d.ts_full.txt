@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/element-plus/lib/plugin.d.ts ===
+import type { Plugin } from 'vue';
+declare const _default: Plugin[];
+export default _default;
+
+
+

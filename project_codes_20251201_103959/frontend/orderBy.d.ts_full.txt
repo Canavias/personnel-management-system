@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/orderBy.d.ts ===
+import { orderBy } from "lodash";
+export default orderBy;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/all.d.ts ===
+import { all } from "../fp";
+export = all;
+
+
+

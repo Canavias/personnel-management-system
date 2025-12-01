@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/is-what/dist/isUndefined.js ===
+import { getType } from './getType.js';
+/** Returns whether the payload is undefined */
+export function isUndefined(payload) {
+    return getType(payload) === 'Undefined';
+}
+
+
+

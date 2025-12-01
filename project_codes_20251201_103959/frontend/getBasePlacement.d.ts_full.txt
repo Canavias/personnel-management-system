@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/getBasePlacement.d.ts ===
+import { BasePlacement, Placement, auto } from "../enums";
+export default function getBasePlacement(placement: Placement | typeof auto): BasePlacement;
+
+
+

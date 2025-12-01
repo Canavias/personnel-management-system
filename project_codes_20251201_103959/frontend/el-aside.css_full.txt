@@ -1,0 +1,4 @@
+=== ./frontend/node_modules/element-plus/theme-chalk/el-aside.css ===
+.el-aside{box-sizing:border-box;flex-shrink:0;overflow:auto;width:var(--el-aside-width,300px)}
+
+

@@ -1,0 +1,228 @@
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// 增强的性别转换函数 - 处理UTF-8编码字符
+function convertGenderToValue(gender) {
+  console.log('🔍 后端性别转换 - 输入:', gender, '类型:', typeof gender);
+  
+  // 处理UTF-8编码的字符
+  const genderMap = { 
+    '男': 1, 'ç”·': 1, // 男的不同编码
+    '女': 2, 'å¥³': 2, // 女的不同编码  
+    '其他': 3
+  };
+  
+  const result = genderMap[gender] || 1;
+  console.log('🔍 后端性别转换 - 输出:', result);
+  return result;
+}
+
+function convertValueToGender(value) {
+  console.log('🔍 后端性别反向转换 - 输入:', value, '类型:', typeof value);
+  const genderMap = { 1: '男', 2: '女', 3: '其他' };
+  const result = genderMap[value] || '男';
+  console.log('🔍 后端性别反向转换 - 输出:', result);
+  return result;
+}
+
+// 获取所有成员 - 添加编码处理
+router.get('/', async (req, res) => {
+  try {
+    console.log('🔄 获取所有成员列表');
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.is_active = true
+      ORDER BY m.id
+    `);
+    
+    console.log('📊 数据库原始数据 - 检查所有成员:');
+    rows.forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别原始值: ${row.gender} (长度: ${row.gender?.length})`);
+    });
+    
+    // 转换性别值 - 添加编码检测
+    const processedRows = rows.map(row => {
+      let genderValue;
+      
+      // 如果gender是数字，直接转换
+      if (typeof row.gender === 'number') {
+        genderValue = row.gender;
+      } 
+      // 如果是字符串，检测编码
+      else if (typeof row.gender === 'string') {
+        if (row.gender === '男' || row.gender === 'ç”·') {
+          genderValue = 1;
+        } else if (row.gender === '女' || row.gender === 'å¥³') {
+          genderValue = 2;
+        } else if (row.gender === '其他') {
+          genderValue = 3;
+        } else {
+          // 尝试解析为数字
+          genderValue = parseInt(row.gender) || 1;
+        }
+      } else {
+        genderValue = 1; // 默认值
+      }
+      
+      return {
+        ...row,
+        gender: convertValueToGender(genderValue)
+      };
+    });
+    
+    console.log('📤 发送给前端的数据:');
+    processedRows.forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别: ${row.gender}`);
+    });
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('获取成员列表失败:', error);
+    res.status(500).json({ error: '获取成员列表失败' });
+  }
+});
+
+// 更新成员信息 - 确保存储为数字
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, gender, grade, student_id, phone, email, department_id, role_id, is_active } = req.body;
+
+    console.log('🔄 更新成员请求 - 性别字段:', gender, '类型:', typeof gender);
+
+    // 验证性别
+    if (gender !== '男' && gender !== '女' && gender !== '其他') {
+      console.log('❌ 性别验证失败:', gender);
+      return res.status(400).json({
+        success: false,
+        message: '性别必须为：男、女 或 其他'
+      });
+    } else {
+      console.log('✅ 性别验证通过:', gender);
+    }
+
+    // 站长逻辑
+    let actualDepartmentId = department_id;
+    if (role_id === 1) {
+      actualDepartmentId = null;
+    } else if (!department_id) {
+      return res.status(400).json({
+        success: false,
+        message: '非站长职位必须选择部门'
+      });
+    }
+
+    // 转换性别为数字存储
+    const genderValue = convertGenderToValue(gender);
+    console.log('📊 最终存储的性别值:', genderValue, '类型:', typeof genderValue);
+
+    const [result] = await pool.execute(
+      `UPDATE members 
+       SET name = ?, gender = ?, grade = ?, student_id = ?, phone = ?, email = ?, 
+           department_id = ?, role_id = ?, is_active = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [name, genderValue, grade, student_id, phone, email, actualDepartmentId, role_id, is_active, id]
+    );
+
+    console.log('📈 数据库更新结果:', result.affectedRows, '行受影响');
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '成员不存在'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: '成员信息更新成功'
+    });
+  } catch (error) {
+    console.error('更新成员失败:', error);
+    res.status(500).json({
+      success: false,
+      message: `更新成员失败: ${error.message}`
+    });
+  }
+});
+
+// 其他路由保持不变...
+router.get('/:id', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.id = ?
+    `, [memberId]);
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    const row = rows[0];
+    let genderValue;
+    
+    if (typeof row.gender === 'number') {
+      genderValue = row.gender;
+    } else if (typeof row.gender === 'string') {
+      if (row.gender === '男' || row.gender === 'ç”·') genderValue = 1;
+      else if (row.gender === '女' || row.gender === 'å¥³') genderValue = 2;
+      else if (row.gender === '其他') genderValue = 3;
+      else genderValue = parseInt(row.gender) || 1;
+    } else {
+      genderValue = 1;
+    }
+    
+    const member = {
+      ...row,
+      gender: convertValueToGender(genderValue)
+    };
+    
+    res.json(member);
+  } catch (error) {
+    console.error('获取成员详情失败:', error);
+    res.status(500).json({ error: '获取成员详情失败' });
+  }
+});
+
+// 其他路由方法保持不变...
+router.post('/', async (req, res) => {
+  try {
+    const { name, gender, grade, student_id, phone, email, department_id, role_id } = req.body;
+    
+    const genderValue = convertGenderToValue(gender);
+    
+    const [result] = await pool.execute(
+      `INSERT INTO members (name, gender, grade, student_id, phone, email, department_id, role_id) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, genderValue, grade, student_id, phone, email, department_id, role_id]
+    );
+    
+    res.json({
+      success: true,
+      message: '成员添加成功',
+      id: result.insertId
+    });
+  } catch (error) {
+    console.error('添加成员失败:', error);
+    res.status(500).json({
+      success: false,
+      message: `添加成员失败: ${error.message}`
+    });
+  }
+});
+
+module.exports = router;

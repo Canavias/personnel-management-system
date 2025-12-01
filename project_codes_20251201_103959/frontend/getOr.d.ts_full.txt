@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/getOr.d.ts ===
+import { getOr } from "../fp";
+export = getOr;
+
+
+

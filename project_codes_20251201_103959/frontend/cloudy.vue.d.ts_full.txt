@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@element-plus/icons-vue/dist/types/components/cloudy.vue.d.ts ===
+declare const _default: import("vue").DefineComponent<{}, void, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, import("vue").ComponentProvideOptions, true, {}, any>;
+export default _default;
+
+
+

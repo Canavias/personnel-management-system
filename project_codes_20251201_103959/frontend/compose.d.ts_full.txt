@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/compose.d.ts ===
+import { compose } from "../fp";
+export = compose;
+
+
+

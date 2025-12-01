@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/eq.d.ts ===
+import { eq } from "lodash";
+export default eq;
+
+
+

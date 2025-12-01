@@ -1,0 +1,12 @@
+=== ./frontend/node_modules/element-plus/lib/components/table-v2/src/private.js ===
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const placeholderSign = Symbol("placeholder");
+
+exports.placeholderSign = placeholderSign;
+//# sourceMappingURL=private.js.map
+
+
+

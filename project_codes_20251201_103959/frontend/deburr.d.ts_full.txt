@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/deburr.d.ts ===
+import { deburr } from "lodash";
+export default deburr;
+
+
+

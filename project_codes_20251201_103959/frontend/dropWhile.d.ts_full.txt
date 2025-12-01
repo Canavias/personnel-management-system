@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/dropWhile.d.ts ===
+import { dropWhile } from "lodash";
+export default dropWhile;
+
+
+

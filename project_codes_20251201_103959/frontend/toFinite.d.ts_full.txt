@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toFinite.d.ts ===
+import { toFinite } from "lodash";
+export default toFinite;
+
+
+

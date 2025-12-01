@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/menu/src/tokens.d.ts ===
+export declare const MENU_INJECTION_KEY = "rootMenu";
+export declare const SUB_MENU_INJECTION_KEY = "subMenu:";
+
+
+

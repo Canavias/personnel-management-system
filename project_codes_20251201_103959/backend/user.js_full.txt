@@ -1,0 +1,79 @@
+=== ./backend/models/user.js ===
+const { pool } = require('../config/database');
+const bcrypt = require('bcryptjs');
+
+class User {
+    // 根据用户名查找用户
+    static async findByUsername(username) {
+        try {
+            const [rows] = await pool.execute(
+                'SELECT * FROM users WHERE username = ?',
+                [username]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // 创建新用户
+    static async create(userData) {
+        const { username, password, email, role_id, department_id } = userData;
+        
+        try {
+            // 加密密码
+            const saltRounds = 10;
+            const passwordHash = await bcrypt.hash(password, saltRounds);
+
+            // 处理可选字段为null
+            const [result] = await pool.execute(
+                `INSERT INTO users (username, password_hash, email, role_id, department_id) 
+                 VALUES (?, ?, ?, ?, ?)`,
+                [username, passwordHash, email || null, role_id || null, department_id || null]
+            );
+
+            return { id: result.insertId, username, email };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // 验证密码
+    static async verifyPassword(plainPassword, hashedPassword) {
+        return await bcrypt.compare(plainPassword, hashedPassword);
+    }
+
+    // 根据ID查找用户
+    static async findById(id) {
+        try {
+            const [rows] = await pool.execute(
+                `SELECT u.*, r.title as role_name, d.name as department_name 
+                 FROM users u 
+                 LEFT JOIN roles r ON u.role_id = r.id 
+                 LEFT JOIN departments d ON u.department_id = d.id 
+                 WHERE u.id = ?`,
+                [id]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // 更新最后登录时间
+    static async updateLastLogin(userId) {
+        try {
+            await pool.execute(
+                'UPDATE users SET last_login = NOW() WHERE id = ?',
+                [userId]
+            );
+        } catch (error) {
+            throw error;
+        }
+    }
+}
+
+module.exports = User;
+
+
+

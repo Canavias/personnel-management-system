@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/axios/MIGRATION_GUIDE.md ===
+# Migration Guide
+
+## 0.x.x -> 1.1.0
+
+
+

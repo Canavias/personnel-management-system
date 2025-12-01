@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/muggle-string/out/getLength.d.ts ===
+import type { Segment } from './types';
+export declare function getLength(segments: Segment<any>[]): number;
+
+
+

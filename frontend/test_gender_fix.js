@@ -1,0 +1,36 @@
+// 测试性别转换函数
+function convertValueToGender(value) {
+  console.log('🔍 测试 - 输入:', value, '类型:', typeof value);
+  
+  // 确保value是数字
+  let genderValue = value;
+  if (typeof value === 'string') {
+    genderValue = parseInt(value);
+  }
+  
+  const genderMap = { 1: '男', 2: '女', 3: '其他' };
+  const result = genderMap[genderValue] || '男';
+  console.log('🔍 测试 - 输出:', result);
+  return result;
+}
+
+// 测试用例
+console.log('🧪 开始性别转换测试...\n');
+
+const testCases = [
+  { input: 1, expected: '男' },
+  { input: 2, expected: '女' },
+  { input: 3, expected: '其他' },
+  { input: '1', expected: '男' },
+  { input: '2', expected: '女' },
+  { input: '3', expected: '其他' },
+  { input: 'ç”·', expected: '男' }, // 乱码应该被转换为数字
+  { input: 'å¥³', expected: '女' },  // 乱码应该被转换为数字
+];
+
+testCases.forEach((test, index) => {
+  console.log(`测试 ${index + 1}:`);
+  const result = convertValueToGender(test.input);
+  const passed = result === test.expected;
+  console.log(`  输入: ${test.input} | 期望: ${test.expected} | 实际: ${result} | ${passed ? '✅ 通过' : '❌ 失败'}\n`);
+});

@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/async-validator/dist-types/validator/boolean.d.ts ===
+import { ExecuteValidator } from '../interface';
+declare const boolean: ExecuteValidator;
+export default boolean;
+
+
+

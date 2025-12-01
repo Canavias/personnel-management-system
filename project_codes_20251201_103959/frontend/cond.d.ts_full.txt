@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/cond.d.ts ===
+import { cond } from "lodash";
+export default cond;
+
+
+

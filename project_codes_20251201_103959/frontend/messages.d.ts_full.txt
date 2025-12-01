@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/async-validator/dist-types/messages.d.ts ===
+import { InternalValidateMessages } from './interface';
+export declare function newMessages(): InternalValidateMessages;
+export declare const messages: InternalValidateMessages;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/assoc.d.ts ===
+import { assoc } from "../fp";
+export = assoc;
+
+
+

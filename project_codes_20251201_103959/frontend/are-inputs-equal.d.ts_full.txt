@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/memoize-one/dist/are-inputs-equal.d.ts ===
+export default function areInputsEqual(newInputs: readonly unknown[], lastInputs: readonly unknown[]): boolean;
+
+
+

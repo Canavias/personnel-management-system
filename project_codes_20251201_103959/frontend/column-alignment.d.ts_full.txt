@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/constants/column-alignment.d.ts ===
+export declare const columnAlignment: readonly ["left", "center", "right"];
+export type ColumnAlignment = (typeof columnAlignment)[number];
+
+
+

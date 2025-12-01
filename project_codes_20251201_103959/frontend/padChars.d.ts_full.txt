@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/padChars.d.ts ===
+import { padChars } from "../fp";
+export = padChars;
+
+
+

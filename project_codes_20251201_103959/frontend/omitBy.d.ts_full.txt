@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/omitBy.d.ts ===
+import { omitBy } from "lodash";
+export default omitBy;
+
+
+

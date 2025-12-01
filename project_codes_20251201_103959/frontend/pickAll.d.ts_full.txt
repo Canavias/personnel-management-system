@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/pickAll.d.ts ===
+import { pickAll } from "../fp";
+export = pickAll;
+
+
+

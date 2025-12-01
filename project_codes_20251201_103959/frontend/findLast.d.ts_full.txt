@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/findLast.d.ts ===
+import { findLast } from "lodash";
+export default findLast;
+
+
+

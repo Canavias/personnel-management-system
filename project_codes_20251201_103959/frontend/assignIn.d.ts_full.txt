@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/assignIn.d.ts ===
+import { assignIn } from "lodash";
+export default assignIn;
+
+
+

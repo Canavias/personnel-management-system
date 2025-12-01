@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/gte.d.ts ===
+import { gte } from "lodash";
+export default gte;
+
+
+

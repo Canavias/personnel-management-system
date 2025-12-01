@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/ceil.d.ts ===
+import { ceil } from "lodash";
+export default ceil;
+
+
+

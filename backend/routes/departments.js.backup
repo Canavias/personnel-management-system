@@ -1,0 +1,109 @@
+const express = require('express');
+const { pool } = require('../config/database');
+const authMiddleware = require('../middleware/auth');
+
+const router = express.Router();
+
+// 设置响应字符集中间件
+router.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
+
+// 获取所有部门
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    console.log('🔍 开始获取部门列表...');
+    const [departments] = await pool.execute('SELECT * FROM departments');
+    console.log('✅ 部门列表查询成功，数量:', departments.length);
+    
+    res.json({
+      success: true,
+      data: departments,
+      total: departments.length
+    });
+  } catch (error) {
+    console.error('❌ 获取部门列表失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取部门列表失败',
+      message: error.message
+    });
+  }
+});
+
+// 获取部门统计信息
+router.get('/stats', authMiddleware, async (req, res) => {
+  try {
+    console.log('🔍 开始获取部门统计...');
+    const [stats] = await pool.execute(`
+      SELECT 
+        d.id as department_id,
+        d.name as department_name,
+        COUNT(m.id) as member_count
+      FROM departments d
+      LEFT JOIN members m ON d.id = m.department_id AND m.is_active = 1
+      GROUP BY d.id, d.name
+      ORDER BY d.id
+    `);
+    console.log('✅ 部门统计查询成功，数量:', stats.length);
+    
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('❌ 获取部门统计失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取部门统计失败',
+      message: error.message
+    });
+  }
+});
+
+// 获取部门详情及成员
+router.get('/:id', authMiddleware, async (req, res) => {
+  try {
+    const departmentId = req.params.id;
+    console.log('🔍 获取部门详情，ID:', departmentId);
+    
+    const [departments] = await pool.execute(
+      'SELECT * FROM departments WHERE id = ?', 
+      [departmentId]
+    );
+    
+    if (departments.length === 0) {
+      return res.status(404).json({ 
+        success: false,
+        error: '部门不存在' 
+      });
+    }
+    
+    const [members] = await pool.execute(
+      `SELECT m.*, r.title as role_name
+       FROM members m
+       LEFT JOIN roles r ON m.role_id = r.id
+       WHERE m.department_id = ? AND m.is_active = 1
+       ORDER BY m.name`,
+      [departmentId]
+    );
+    
+    res.json({
+      success: true,
+      data: {
+        ...departments[0],
+        members: members
+      }
+    });
+  } catch (error) {
+    console.error('❌ 获取部门详情失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取部门详情失败',
+      message: error.message
+    });
+  }
+});
+
+module.exports = router;

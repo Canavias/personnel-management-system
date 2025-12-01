@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/assoc.js ===
+module.exports = require('./set');
+
+
+

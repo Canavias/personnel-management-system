@@ -1,0 +1,199 @@
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// 修复的性别转换函数 - 现在gender字段是数字
+function convertGenderToValue(gender) {
+  console.log('🔍 性别转换 - 输入:', gender, '类型:', typeof gender);
+  
+  // 如果已经是数字，直接返回
+  if (typeof gender === 'number') {
+    return gender;
+  }
+  
+  // 如果是字符串，转换为数字
+  const genderMap = { '男': 1, '女': 2, '其他': 3 };
+  const result = genderMap[gender] || 1;
+  console.log('🔍 性别转换 - 输出:', result);
+  return result;
+}
+
+function convertValueToGender(value) {
+  console.log('🔍 性别反向转换 - 输入:', value, '类型:', typeof value);
+  
+  // 确保value是数字
+  let genderValue = value;
+  if (typeof value === 'string') {
+    genderValue = parseInt(value);
+  }
+  
+  const genderMap = { 1: '男', 2: '女', 3: '其他' };
+  const result = genderMap[genderValue] || '男';
+  console.log('🔍 性别反向转换 - 输出:', result);
+  return result;
+}
+
+// 修复参数处理函数
+function sanitizeUpdateParams(params) {
+  console.log('🧹 原始参数:', params);
+  
+  const sanitized = {};
+  const fields = ['name', 'gender', 'grade', 'student_id', 'phone', 'email', 
+                  'department_id', 'role_id', 'is_active'];
+  
+  fields.forEach(field => {
+    if (params[field] === undefined) {
+      switch(field) {
+        case 'is_active':
+          sanitized[field] = true;
+          break;
+        case 'department_id':
+        case 'role_id':
+          sanitized[field] = null;
+          break;
+        case 'name':
+        case 'gender':
+        case 'grade':
+          sanitized[field] = field === 'gender' ? '男' : '';
+          break;
+        default:
+          sanitized[field] = null;
+      }
+    } else {
+      sanitized[field] = params[field];
+    }
+  });
+  
+  return sanitized;
+}
+
+// 修复的获取所有成员函数
+router.get('/', async (req, res) => {
+  try {
+    console.log('🔄 获取所有成员列表');
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.is_active = true
+      ORDER BY m.id
+    `);
+    
+    console.log('📊 数据库原始数据（前3条）:');
+    rows.slice(0, 3).forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别值: ${row.gender} (类型: ${typeof row.gender})`);
+    });
+    
+    // 修复的转换逻辑
+    const processedRows = rows.map(row => {
+      let genderValue;
+      
+      if (typeof row.gender === 'number') {
+        genderValue = row.gender;
+      } else if (typeof row.gender === 'string') {
+        // 尝试解析为数字
+        genderValue = parseInt(row.gender);
+        if (isNaN(genderValue)) {
+          // 如果是字符串，尝试转换
+          if (row.gender.includes('男') || row.gender.includes('ç')) genderValue = 1;
+          else if (row.gender.includes('女') || row.gender.includes('å')) genderValue = 2;
+          else genderValue = 1;
+        }
+      } else {
+        genderValue = 1;
+      }
+      
+      return {
+        ...row,
+        gender: convertValueToGender(genderValue)
+      };
+    });
+    
+    console.log('📤 处理后数据（前3条）:');
+    processedRows.slice(0, 3).forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别: ${row.gender}`);
+    });
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('获取成员列表失败:', error);
+    res.status(500).json({ error: '获取成员列表失败' });
+  }
+});
+
+// 保持其他路由不变（使用之前的修复版本）
+// ... [其他路由代码保持不变] ...
+
+module.exports = router;
+
+// 确保PUT路由存在
+router.put('/:id', async (req, res) => {
+  console.log('🔄 PUT /api/members/' + req.params.id + ' 被调用');
+  
+  try {
+    const { id } = req.params;
+    const { name, gender, grade, student_id, phone, email, department_id, role_id, is_active } = req.body;
+
+    console.log('📦 请求数据:', JSON.stringify(req.body, null, 2));
+
+    // 验证必填字段
+    if (!name) {
+      return res.status(400).json({ 
+        success: false, 
+        message: '姓名不能为空' 
+      });
+    }
+
+    // 转换性别
+    const genderValue = gender === '男' ? 1 : gender === '女' ? 2 : 3;
+
+    // 站长逻辑
+    let actualDepartmentId = department_id;
+    if (role_id === 1) { // 站长
+      actualDepartmentId = null;
+    }
+
+    const [result] = await pool.execute(
+      `UPDATE members 
+       SET name = ?, gender = ?, grade = ?, student_id = ?, phone = ?, email = ?, 
+           department_id = ?, role_id = ?, is_active = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [
+        name || '',
+        genderValue,
+        grade || '',
+        student_id || null,
+        phone || null,
+        email || null,
+        actualDepartmentId,
+        role_id || null,
+        is_active !== undefined ? is_active : true,
+        id
+      ]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        message: '成员不存在' 
+      });
+    }
+
+    res.json({
+      success: true,
+      message: '成员更新成功',
+      data: { id }
+    });
+
+  } catch (error) {
+    console.error('更新成员失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '更新失败: ' + error.message
+    });
+  }
+});

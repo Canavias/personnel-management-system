@@ -1,0 +1,4 @@
+=== ./frontend/node_modules/element-plus/theme-chalk/el-space.css ===
+.el-space{display:inline-flex;vertical-align:top}.el-space__item{display:flex;flex-wrap:wrap}.el-space__item>*{flex:1}.el-space--vertical{flex-direction:column}
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/dropLastWhile.d.ts ===
+import { dropLastWhile } from "../fp";
+export = dropLastWhile;
+
+
+

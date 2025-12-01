@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/gt.d.ts ===
+import { gt } from "lodash";
+export default gt;
+
+
+

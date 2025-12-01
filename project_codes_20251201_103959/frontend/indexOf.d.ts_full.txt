@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/indexOf.d.ts ===
+import { indexOf } from "lodash";
+export default indexOf;
+
+
+

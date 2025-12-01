@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/es-errors/syntax.d.ts ===
+declare const SyntaxError: SyntaxErrorConstructor;
+
+export = SyntaxError;
+
+
+

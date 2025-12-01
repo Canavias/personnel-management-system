@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@vue/language-core/lib/codegen/utils/stringLiteralKey.d.ts ===
+import type { Code, VueCodeInformation } from '../../types';
+export declare function generateStringLiteralKey(code: string, offset?: number, info?: VueCodeInformation): Generator<Code>;
+
+
+

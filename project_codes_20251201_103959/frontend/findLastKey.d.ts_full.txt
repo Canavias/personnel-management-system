@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/findLastKey.d.ts ===
+import { findLastKey } from "lodash";
+export default findLastKey;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/juxt.d.ts ===
+import { juxt } from "../fp";
+export = juxt;
+
+
+

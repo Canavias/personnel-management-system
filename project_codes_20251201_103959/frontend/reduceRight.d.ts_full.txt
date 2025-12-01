@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/reduceRight.d.ts ===
+import { reduceRight } from "lodash";
+export default reduceRight;
+
+
+

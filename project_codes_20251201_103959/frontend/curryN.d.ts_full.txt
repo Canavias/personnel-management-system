@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/curryN.d.ts ===
+import { curryN } from "../fp";
+export = curryN;
+
+
+

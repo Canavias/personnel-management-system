@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/upperCase.d.ts ===
+import { upperCase } from "lodash";
+export default upperCase;
+
+
+

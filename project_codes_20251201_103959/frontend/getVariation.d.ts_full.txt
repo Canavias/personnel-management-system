@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/getVariation.d.ts ===
+import { Variation, Placement } from "../enums";
+export default function getVariation(placement: Placement): Variation | null | undefined;
+
+
+

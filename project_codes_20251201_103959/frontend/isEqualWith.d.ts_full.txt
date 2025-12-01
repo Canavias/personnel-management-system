@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isEqualWith.d.ts ===
+import { isEqualWith } from "lodash";
+export default isEqualWith;
+
+
+

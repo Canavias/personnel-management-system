@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/overEvery.d.ts ===
+import { overEvery } from "lodash";
+export default overEvery;
+
+
+

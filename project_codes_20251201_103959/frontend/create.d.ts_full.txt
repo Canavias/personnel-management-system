@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/create.d.ts ===
+import { create } from "lodash";
+export default create;
+
+
+

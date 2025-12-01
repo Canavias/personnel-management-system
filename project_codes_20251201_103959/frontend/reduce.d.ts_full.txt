@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/reduce.d.ts ===
+import { reduce } from "lodash";
+export default reduce;
+
+
+

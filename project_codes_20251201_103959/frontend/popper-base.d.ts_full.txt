@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@popperjs/core/lib/popper-base.d.ts ===
+import { createPopper, popperGenerator, detectOverflow } from "./createPopper";
+export * from "./types";
+export { createPopper, popperGenerator, detectOverflow };
+
+
+

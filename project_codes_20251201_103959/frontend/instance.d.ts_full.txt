@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/empty/src/instance.d.ts ===
+import type Empty from './empty.vue';
+export type EmptyInstance = InstanceType<typeof Empty> & unknown;
+
+
+

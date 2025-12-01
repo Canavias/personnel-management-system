@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/instanceOf.d.ts ===
+declare function isElement(node: unknown): boolean;
+declare function isHTMLElement(node: unknown): boolean;
+declare function isShadowRoot(node: unknown): boolean;
+export { isElement, isHTMLElement, isShadowRoot };
+
+
+

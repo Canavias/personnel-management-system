@@ -1,0 +1,236 @@
+=== ./backend/routes/members_complete.js ===
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// 性别转换函数
+function convertGenderToValue(gender) {
+  const genderMap = { '男': 1, '女': 2, '其他': 3 };
+  return genderMap[gender] || 1;
+}
+
+function convertValueToGender(value) {
+  const genderMap = { 1: '男', 2: '女', 3: '其他' };
+  return genderMap[value] || '男';
+}
+
+// 获取所有成员
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.is_active = true
+      ORDER BY m.id
+    `);
+    
+    // 转换性别值
+    const processedRows = rows.map(row => ({
+      ...row,
+      gender: convertValueToGender(row.gender)
+    }));
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('获取成员列表失败:', error);
+    res.status(500).json({ error: '获取成员列表失败' });
+  }
+});
+
+// 更新成员信息
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, gender, grade, student_id, phone, email, department_id, role_id, is_active } = req.body;
+
+    console.log('更新成员请求:', req.body);
+
+    // 验证性别
+    if (gender !== '男' && gender !== '女' && gender !== '其他') {
+      return res.status(400).json({
+        success: false,
+        message: '性别必须为：男、女 或 其他'
+      });
+    }
+
+    // 站长逻辑：站长没有部门
+    let actualDepartmentId = department_id;
+    if (role_id === 1) { // 假设1是站长角色ID
+      actualDepartmentId = null;
+    } else if (!department_id) {
+      return res.status(400).json({
+        success: false,
+        message: '非站长职位必须选择部门'
+      });
+    }
+
+    // 转换性别
+    const genderValue = convertGenderToValue(gender);
+
+    const [result] = await pool.execute(
+      `UPDATE members 
+       SET name = ?, gender = ?, grade = ?, student_id = ?, phone = ?, email = ?, 
+           department_id = ?, role_id = ?, is_active = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [name, genderValue, grade, student_id, phone, email, actualDepartmentId, role_id, is_active, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '成员不存在'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: '成员信息更新成功'
+    });
+  } catch (error) {
+    console.error('更新成员失败:', error);
+    res.status(500).json({
+      success: false,
+      message: `更新成员失败: ${error.message}`
+    });
+  }
+});
+
+// 其他路由保持不变...
+router.get('/:id', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.id = ?
+    `, [memberId]);
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    // 转换性别值
+    const member = {
+      ...rows[0],
+      gender: convertValueToGender(rows[0].gender)
+    };
+    
+    res.json(member);
+  } catch (error) {
+    console.error('获取成员详情失败:', error);
+    res.status(500).json({ error: '获取成员详情失败' });
+  }
+});
+
+router.post('/', async (req, res) => {
+  // 添加成员逻辑
+  try {
+    const { name, gender, grade, student_id, phone, email, department_id, role_id } = req.body;
+    
+    const genderValue = convertGenderToValue(gender);
+    
+    const [result] = await pool.execute(
+      `INSERT INTO members (name, gender, grade, student_id, phone, email, department_id, role_id) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, genderValue, grade, student_id, phone, email, department_id, role_id]
+    );
+    
+    res.json({
+      success: true,
+      message: '成员添加成功',
+      id: result.insertId
+    });
+  } catch (error) {
+    console.error('添加成员失败:', error);
+    res.status(500).json({
+      success: false,
+      message: `添加成员失败: ${error.message}`
+    });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const [result] = await pool.execute(
+      'UPDATE members SET is_active = false WHERE id = ?',
+      [memberId]
+    );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    res.json({ message: '成员删除成功' });
+  } catch (error) {
+    console.error('删除成员失败:', error);
+    res.status(500).json({ error: '删除成员失败' });
+  }
+});
+
+router.get('/department/:id', async (req, res) => {
+  try {
+    const departmentId = req.params.id;
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.department_id = ? AND m.is_active = true
+    `, [departmentId]);
+    
+    // 转换性别值
+    const processedRows = rows.map(row => ({
+      ...row,
+      gender: convertValueToGender(row.gender)
+    }));
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('按部门查询成员失败:', error);
+    res.status(500).json({ error: '按部门查询成员失败' });
+  }
+});
+
+router.get('/search/:keyword', async (req, res) => {
+  try {
+    const keyword = `%${req.params.keyword}%`;
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.name LIKE ? AND m.is_active = true
+    `, [keyword]);
+    
+    // 转换性别值
+    const processedRows = rows.map(row => ({
+      ...row,
+      gender: convertValueToGender(row.gender)
+    }));
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('搜索成员失败:', error);
+    res.status(500).json({ error: '搜索成员失败' });
+  }
+});
+
+module.exports = router;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/findIndexFrom.d.ts ===
+import { findIndexFrom } from "../fp";
+export = findIndexFrom;
+
+
+

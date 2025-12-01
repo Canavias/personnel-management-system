@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/validateModifiers.d.ts ===
+export default function validateModifiers(modifiers: Array<any>): void;
+
+
+

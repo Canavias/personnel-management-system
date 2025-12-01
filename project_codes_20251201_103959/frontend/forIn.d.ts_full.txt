@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/forIn.d.ts ===
+import { forIn } from "lodash";
+export default forIn;
+
+
+

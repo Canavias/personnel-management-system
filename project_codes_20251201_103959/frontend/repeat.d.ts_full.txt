@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/repeat.d.ts ===
+import { repeat } from "lodash";
+export default repeat;
+
+
+

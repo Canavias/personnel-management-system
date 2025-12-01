@@ -1,0 +1,14 @@
+=== ./frontend/node_modules/element-plus/lib/components/menu/src/menu-item-group.js ===
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const menuItemGroupProps = {
+  title: String
+};
+
+exports.menuItemGroupProps = menuItemGroupProps;
+//# sourceMappingURL=menu-item-group.js.map
+
+
+

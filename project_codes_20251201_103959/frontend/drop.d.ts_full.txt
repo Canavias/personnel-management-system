@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/drop.d.ts ===
+import { drop } from "lodash";
+export default drop;
+
+
+

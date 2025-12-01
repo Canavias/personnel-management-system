@@ -1,0 +1,10 @@
+=== ./backend/node_modules/es-object-atoms/isObject.js ===
+'use strict';
+
+/** @type {import('./isObject')} */
+module.exports = function isObject(x) {
+	return !!x && (typeof x === 'function' || typeof x === 'object');
+};
+
+
+

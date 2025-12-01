@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/prop.js ===
+module.exports = require('./get');
+
+
+

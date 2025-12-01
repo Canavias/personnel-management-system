@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/trim.d.ts ===
+import { trim } from "lodash";
+export default trim;
+
+
+

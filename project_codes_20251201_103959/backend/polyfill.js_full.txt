@@ -1,0 +1,8 @@
+=== ./backend/node_modules/lie/polyfill.js ===
+'use strict';
+if (typeof global.Promise !== 'function') {
+  global.Promise = require('./lib');
+}
+
+
+

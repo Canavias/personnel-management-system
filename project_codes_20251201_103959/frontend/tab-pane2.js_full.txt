@@ -1,0 +1,28 @@
+=== ./frontend/node_modules/element-plus/lib/components/tabs/src/tab-pane2.js ===
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var runtime = require('../../../utils/vue/props/runtime.js');
+
+const tabPaneProps = runtime.buildProps({
+  label: {
+    type: String,
+    default: ""
+  },
+  name: {
+    type: [String, Number]
+  },
+  closable: {
+    type: Boolean,
+    default: void 0
+  },
+  disabled: Boolean,
+  lazy: Boolean
+});
+
+exports.tabPaneProps = tabPaneProps;
+//# sourceMappingURL=tab-pane2.js.map
+
+
+

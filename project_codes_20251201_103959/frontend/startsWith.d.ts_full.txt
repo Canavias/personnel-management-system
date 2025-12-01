@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/startsWith.d.ts ===
+import { startsWith } from "lodash";
+export default startsWith;
+
+
+

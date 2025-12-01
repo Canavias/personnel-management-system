@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/table/src/tableColumn.d.ts ===
+import ElTableColumn from './table-column';
+export default ElTableColumn;
+
+
+

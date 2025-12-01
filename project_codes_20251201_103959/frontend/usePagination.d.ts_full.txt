@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/element-plus/lib/components/pagination/src/usePagination.d.ts ===
+export declare const usePagination: () => import("./constants").ElPaginationContext;
+
+
+

@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/element-plus/lib/utils/i18n.d.ts ===
+export declare const isKorean: (text: string) => boolean;
+
+
+

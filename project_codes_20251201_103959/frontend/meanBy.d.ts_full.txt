@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/meanBy.d.ts ===
+import { meanBy } from "lodash";
+export default meanBy;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/matches.d.ts ===
+import { matches } from "lodash";
+export default matches;
+
+
+

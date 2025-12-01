@@ -1,0 +1,29 @@
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
+
+export default defineConfig({
+    plugins: [vue()],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        }
+    },
+    server: {
+        port: 5173,
+        host: '0.0.0.0',
+        strictPort: true,
+        proxy: {
+            // 关键：确保代理配置正确
+            '/api': {
+                target: 'http://localhost:3000',  // 后端地址
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => {
+                    console.log('🔀 Vite代理转发:', path, '->', 'http://localhost:3000' + path);
+                    return path;
+                }
+            }
+        }
+    }
+});

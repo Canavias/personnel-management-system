@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/memoize.d.ts ===
+import { memoize } from "lodash";
+export default memoize;
+
+
+

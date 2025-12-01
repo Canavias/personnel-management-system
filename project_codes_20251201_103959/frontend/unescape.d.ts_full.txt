@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/unescape.d.ts ===
+import { unescape } from "lodash";
+export default unescape;
+
+
+

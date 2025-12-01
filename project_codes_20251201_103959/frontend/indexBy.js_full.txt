@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/indexBy.js ===
+module.exports = require('./keyBy');
+
+
+

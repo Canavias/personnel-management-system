@@ -1,0 +1,99 @@
+=== ./backend/routes/export.js ===
+const express = require('express');
+const ExcelJS = require('exceljs');
+const router = express.Router();
+const db = require('../config/database');
+
+// Export members to Excel
+router.get('/members', async (req, res) => {
+  try {
+    const [members] = await db.pool.execute(`
+      SELECT m.id, m.name, m.gender, m.grade, m.phone, m.email, 
+             d.name as department, r.title as role
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN member_roles mr ON m.id = mr.member_id
+      LEFT JOIN roles r ON mr.role_id = r.id
+      WHERE m.status = 1
+    `);
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Members');
+
+    // Set columns with English headers to avoid encoding issues
+    worksheet.columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Name', key: 'name', width: 15 },
+      { header: 'Gender', key: 'gender', width: 10 },
+      { header: 'Grade', key: 'grade', width: 10 },
+      { header: 'Phone', key: 'phone', width: 15 },
+      { header: 'Email', key: 'email', width: 25 },
+      { header: 'Department', key: 'department', width: 15 },
+      { header: 'Role', key: 'role', width: 15 }
+    ];
+
+    // Add data rows
+    members.forEach(member => {
+      worksheet.addRow(member);
+    });
+
+    // Set response headers for Excel file download
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=members.xlsx');
+
+    // Write to response
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (error) {
+    console.error('Export failed:', error);
+    res.status(500).json({ message: 'Export failed', error: error.message });
+  }
+});
+
+// Export performance data to Excel
+router.get('/performance', async (req, res) => {
+  try {
+    const [performance] = await db.pool.execute(`
+      SELECT m.name, m.grade, d.name as department, 
+             e.score, e.comments, e.evaluated_at
+      FROM evaluations e
+      JOIN members m ON e.member_id = m.id
+      JOIN departments d ON m.department_id = d.id
+      WHERE m.status = 1
+      ORDER BY d.name, m.name
+    `);
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Performance');
+
+    // Set columns with English headers
+    worksheet.columns = [
+      { header: 'Name', key: 'name', width: 15 },
+      { header: 'Grade', key: 'grade', width: 10 },
+      { header: 'Department', key: 'department', width: 15 },
+      { header: 'Score', key: 'score', width: 10 },
+      { header: 'Comments', key: 'comments', width: 30 },
+      { header: 'Evaluated At', key: 'evaluated_at', width: 15 }
+    ];
+
+    performance.forEach(record => {
+      worksheet.addRow(record);
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=performance.xlsx');
+
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (error) {
+    console.error('Performance export failed:', error);
+    res.status(500).json({ message: 'Performance export failed', error: error.message });
+  }
+});
+
+module.exports = router;
+
+
+

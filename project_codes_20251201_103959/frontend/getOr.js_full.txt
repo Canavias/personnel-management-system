@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/lodash/fp/getOr.js ===
+var convert = require('./convert'),
+    func = convert('getOr', require('../get'));
+
+func.placeholder = require('./placeholder');
+module.exports = func;
+
+
+

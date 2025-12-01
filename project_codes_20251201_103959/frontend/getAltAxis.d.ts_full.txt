@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/getAltAxis.d.ts ===
+export default function getAltAxis(axis: "x" | "y"): "x" | "y";
+
+
+

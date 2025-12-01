@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/reject.d.ts ===
+import { reject } from "lodash";
+export default reject;
+
+
+

@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/getWindow.d.ts ===
+export default function getWindow(node: any): any;
+
+
+

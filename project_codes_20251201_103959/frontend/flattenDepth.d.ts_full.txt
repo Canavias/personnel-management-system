@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/flattenDepth.d.ts ===
+import { flattenDepth } from "lodash";
+export default flattenDepth;
+
+
+

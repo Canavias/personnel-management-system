@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/element-plus/lib/utils/throttleByRaf.d.ts ===
+export declare function throttleByRaf(cb: (...args: any[]) => void): {
+    (...args: any[]): void;
+    cancel(): void;
+};
+
+
+

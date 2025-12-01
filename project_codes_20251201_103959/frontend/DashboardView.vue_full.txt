@@ -1,0 +1,158 @@
+=== ./frontend/src/views/DashboardView.vue ===
+<template>
+  <div class="dashboard">
+    <h1>系统概览</h1>
+    
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-content">
+            <div class="stat-icon system-status">
+              <i class="el-icon-success"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">运行正常</div>
+              <div class="stat-label">系统状态</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-content">
+            <div class="stat-icon total-members">
+              <i class="el-icon-user"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">{{ memberCount }}</div>
+              <div class="stat-label">总成员数</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-content">
+            <div class="stat-icon total-departments">
+              <i class="el-icon-office-building"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">6</div>
+              <div class="stat-label">部门数量</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-content">
+            <div class="stat-icon active-users">
+              <i class="el-icon-user-solid"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">1</div>
+              <div class="stat-label">在线用户</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-card class="recent-activity" header="最近活动">
+      <el-timeline>
+        <el-timeline-item timestamp="2025-11-30" placement="top">
+          <el-card>
+            <h4>系统启动</h4>
+            <p>人员名单管理系统已启动运行</p>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
+    </el-card>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useMemberStore } from '@/stores/member'
+
+const memberStore = useMemberStore()
+const memberCount = ref(0)
+
+onMounted(async () => {
+  try {
+    await memberStore.fetchMembers()
+    memberCount.value = memberStore.members.length
+  } catch (error) {
+    console.error('加载成员数据失败:', error)
+    memberCount.value = 0
+  }
+})
+</script>
+
+<style scoped>
+.dashboard {
+  padding: 20px;
+}
+
+.stat-card {
+  margin-bottom: 20px;
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-size: 24px;
+  color: white;
+}
+
+.system-status {
+  background-color: #67C23A;
+}
+
+.total-members {
+  background-color: #409EFF;
+}
+
+.total-departments {
+  background-color: #E6A23C;
+}
+
+.active-users {
+  background-color: #F56C6C;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  color: #909399;
+  font-size: 14px;
+}
+
+.recent-activity {
+  margin-top: 20px;
+}
+</style>
+
+
+

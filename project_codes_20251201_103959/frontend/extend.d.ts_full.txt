@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/extend.d.ts ===
+import { extend } from "lodash";
+export default extend;
+
+
+

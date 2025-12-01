@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/vue-router/vue-router-auto.d.ts ===
+// augmented by unplugin-vue-router
+
+
+

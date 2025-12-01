@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@sec-ant/readable-stream/dist/ponyfill/fromAnyIterable.d.ts ===
+export { fromAnyIterable } from "../core/fromAnyIterable.js";
+
+
+

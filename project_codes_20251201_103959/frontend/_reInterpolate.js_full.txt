@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/lodash-es/_reInterpolate.js ===
+/** Used to match template delimiters. */
+var reInterpolate = /<%=([\s\S]+?)%>/g;
+
+export default reInterpolate;
+
+
+

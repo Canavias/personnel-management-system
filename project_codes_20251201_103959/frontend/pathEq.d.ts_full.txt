@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/pathEq.d.ts ===
+import { pathEq } from "../fp";
+export = pathEq;
+
+
+

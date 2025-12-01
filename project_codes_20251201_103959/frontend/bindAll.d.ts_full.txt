@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/bindAll.d.ts ===
+import { bindAll } from "lodash";
+export default bindAll;
+
+
+

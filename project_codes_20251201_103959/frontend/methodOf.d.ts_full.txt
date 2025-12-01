@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/methodOf.d.ts ===
+import { methodOf } from "lodash";
+export default methodOf;
+
+
+

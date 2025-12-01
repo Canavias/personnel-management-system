@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/pick.d.ts ===
+import { pick } from "lodash";
+export default pick;
+
+
+

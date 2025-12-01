@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/sortedUniqBy.d.ts ===
+import { sortedUniqBy } from "lodash";
+export default sortedUniqBy;
+
+
+

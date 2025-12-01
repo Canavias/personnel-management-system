@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/async-validator/dist-types/validator/enum.d.ts ===
+import { ExecuteValidator } from '../interface';
+declare const enumerable: ExecuteValidator;
+export default enumerable;
+
+
+

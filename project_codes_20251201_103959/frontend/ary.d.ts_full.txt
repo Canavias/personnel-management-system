@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/ary.d.ts ===
+import { ary } from "lodash";
+export default ary;
+
+
+

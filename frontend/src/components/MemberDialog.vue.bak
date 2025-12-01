@@ -1,0 +1,261 @@
+<template>
+  <el-dialog
+    v-model="dialogVisible"
+    :title="dialogTitle"
+    width="500px"
+    :before-close="handleBeforeClose"
+  >
+    <el-form
+      ref="formRef"
+      :model="form"
+      :rules="rules"
+      label-width="80px"
+      status-icon
+    >
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="form.name" placeholder="请输入姓名" />
+      </el-form-item>
+
+      <el-form-item label="性别" prop="gender">
+        <el-radio-group v-model="form.gender">
+          <el-radio label="男">男</el-radio>
+          <el-radio label="女">女</el-radio>
+          <el-radio label="其他">其他</el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+      <el-form-item label="年级" prop="grade">
+        <el-select v-model="form.grade" placeholder="请选择年级" style="width: 100%">
+          <el-option label="2021级" value="2021级" />
+          <el-option label="2022级" value="2022级" />
+          <el-option label="2023级" value="2023级" />
+          <el-option label="2024级" value="2024级" />
+          <el-option label="2025级" value="2025级" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="手机" prop="phone">
+        <el-input v-model="form.phone" placeholder="请输入手机号" />
+      </el-form-item>
+
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="请输入邮箱" />
+      </el-form-item>
+
+      <el-form-item label="职位" prop="role_id">
+        <el-select v-model="form.role_id" placeholder="请选择职位" style="width: 100%" @change="handleRoleChange">
+          <el-option label="站长" :value="1" />
+          <el-option label="部长" :value="2" />
+          <el-option label="副部长" :value="3" />
+          <el-option label="负责人" :value="4" />
+          <el-option label="成员" :value="5" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item 
+        v-if="form.role_id !== 1"
+        label="部门" 
+        prop="department_id"
+      >
+        <el-select v-model="form.department_id" placeholder="请选择部门" style="width: 100%">
+          <el-option label="程序部" :value="1" />
+          <el-option label="游戏部" :value="2" />
+          <el-option label="Web部" :value="3" />
+          <el-option label="UI部" :value="4" />
+          <el-option label="App部" :value="5" />
+          <el-option label="iOS部" :value="7" />
+          <el-option label="精英培优班" :value="6" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="form.role_id === 1">
+        <el-alert
+          title="站长不属于任何部门"
+          type="info"
+          :closable="false"
+          show-icon
+        />
+      </el-form-item>
+    </el-form>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="loading">
+          确认
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, watch, nextTick, computed } from 'vue'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { useMemberStore } from '@/stores/member'
+
+interface MemberForm {
+  id?: number
+  name: string
+  gender: string
+  grade: string
+  phone: string
+  email: string
+  department_id: number | null
+  role_id: number | null
+}
+
+const props = defineProps<{
+  modelValue: boolean
+  editData?: any
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+  (e: 'success'): void
+}>()
+
+const memberStore = useMemberStore()
+
+// 调试props
+console.log('🔍 MemberDialog props:', {
+  visible: props.visible,
+  editData: props.editData,
+  hasEditData: !!props.editData
+})
+const formRef = ref<FormInstance>()
+const loading = ref(false)
+
+const form = reactive<MemberForm>({
+  name: '',
+  gender: '',
+  grade: '',
+  phone: '',
+  email: '',
+  department_id: null,
+  role_id: null
+})
+
+const dialogVisible = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+
+const dialogTitle = computed(() => {
+  return props.editData ? '编辑成员' : '添加成员'
+})
+
+const rules = computed<FormRules>(() => {
+  const baseRules: FormRules = {
+    name: [
+      { required: true, message: '请输入姓名', trigger: 'blur' }
+    ],
+    gender: [
+      { required: true, message: '请选择性别', trigger: 'change' }
+    ],
+    grade: [
+      { required: true, message: '请选择年级', trigger: 'change' }
+    ],
+    role_id: [
+      { required: true, message: '请选择职位', trigger: 'change' }
+    ]
+  }
+  
+  if (form.role_id !== 1) {
+    baseRules.department_id = [
+      { required: true, message: '请选择部门', trigger: 'change' }
+    ]
+  }
+  
+  return baseRules
+})
+
+const handleRoleChange = (roleId: number) => {
+  if (roleId === 1) {
+    form.department_id = null
+  }
+}
+
+const resetForm = () => {
+  form.name = ''
+  form.gender = ''
+  form.grade = ''
+  form.phone = ''
+  form.email = ''
+  form.department_id = null
+  form.role_id = null
+  formRef.value?.clearValidate()
+}
+
+const handleBeforeClose = (done: () => void) => {
+  handleClose()
+  done()
+}
+
+const handleClose = () => {
+  console.log('关闭对话框')
+  dialogVisible.value = false
+  resetForm()
+}
+
+const handleSubmit = async () => {
+  if (!formRef.value) return
+
+  try {
+    const valid = await formRef.value.validate()
+    if (!valid) return
+
+    loading.value = true
+
+    if (props.editData) {
+      await memberStore.updateMember(props.editData.id, form)
+      ElMessage.success('更新成功')
+    } else {
+      await memberStore.createMember(form)
+      ElMessage.success('创建成功')
+    }
+
+    emit('success')
+    handleClose()
+  } catch (error) {
+    console.error('提交失败:', error)
+    ElMessage.error('操作失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+watch(() => props.visible, (newVal) => {
+  console.log('👀 对话框可见性变化:', newVal)
+  if (newVal) {
+    nextTick(() => {
+      console.log('📋 准备填充表单数据，editData:', props.editData)
+      if (props.editData) {
+        // 编辑模式：填充表单数据
+        console.log('编辑模式，填充数据:', props.editData)
+        Object.assign(form, {
+          name: props.editData.name || '',
+          gender: props.editData.gender || '',
+          grade: props.editData.grade || '',
+          phone: props.editData.phone || '',
+          email: props.editData.email || '',
+          department_id: props.editData.department_id || null,
+          role_id: props.editData.role_id || null
+        })
+      } else {
+        // 添加模式：重置表单
+        console.log('添加模式，重置表单')
+        resetForm()
+      }
+    })
+  }
+})
+</script>
+
+<style scoped>
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+</style>

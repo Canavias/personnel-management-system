@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/element-plus/lib/utils/vue/global-node.d.ts ===
+export declare function createGlobalNode(id?: string): HTMLDivElement;
+export declare function removeGlobalNode(el: HTMLElement): void;
+export declare function changeGlobalNodesTarget(el: HTMLElement): void;
+
+
+

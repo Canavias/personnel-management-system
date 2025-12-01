@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toPairs.d.ts ===
+import { toPairs } from "lodash";
+export default toPairs;
+
+
+

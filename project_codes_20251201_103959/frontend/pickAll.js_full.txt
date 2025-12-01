@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/pickAll.js ===
+module.exports = require('./pick');
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/has-symbols/shams.d.ts ===
+declare function hasSymbolShams(): boolean;
+
+export = hasSymbolShams;
+
+

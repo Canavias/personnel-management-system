@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/is-what/dist/isSet.js ===
+import { getType } from './getType.js';
+/** Returns whether the payload is a Set */
+export function isSet(payload) {
+    return getType(payload) === 'Set';
+}
+
+
+

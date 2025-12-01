@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/is-what/dist/isEmptyString.js ===
+/** Returns whether the payload is '' */
+export function isEmptyString(payload) {
+    return payload === '';
+}
+
+
+

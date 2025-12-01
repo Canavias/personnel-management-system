@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@vue/language-core/lib/codegen/style/classProperty.d.ts ===
+import type { Code } from '../../types';
+export declare function generateClassProperty(styleIndex: number, classNameWithDot: string, offset: number, propertyType: string): Generator<Code>;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/mergePaddingObject.d.ts ===
+import type { SideObject } from "../types";
+export default function mergePaddingObject(paddingObject: Partial<SideObject>): SideObject;
+
+
+

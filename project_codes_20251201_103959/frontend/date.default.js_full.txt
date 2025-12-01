@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/lodash-es/date.default.js ===
+import now from './now.js';
+
+export default {
+  now
+};
+
+
+

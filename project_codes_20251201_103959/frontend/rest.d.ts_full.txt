@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/rest.d.ts ===
+import { rest } from "lodash";
+export default rest;
+
+
+

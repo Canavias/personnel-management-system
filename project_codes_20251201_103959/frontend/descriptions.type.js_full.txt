@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/element-plus/lib/components/descriptions/src/descriptions.type.js ===
+'use strict';
+
+//# sourceMappingURL=descriptions.type.js.map
+
+
+

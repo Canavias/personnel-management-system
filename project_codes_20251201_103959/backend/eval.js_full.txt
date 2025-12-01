@@ -1,0 +1,8 @@
+=== ./backend/node_modules/es-errors/eval.js ===
+'use strict';
+
+/** @type {import('./eval')} */
+module.exports = EvalError;
+
+
+

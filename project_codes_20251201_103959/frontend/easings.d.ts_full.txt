@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/element-plus/lib/utils/easings.d.ts ===
+export declare function easeInOutCubic(t: number, b: number, c: number, d: number): number;
+
+
+

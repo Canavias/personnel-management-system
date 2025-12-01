@@ -1,0 +1,5 @@
+=== ./frontend/dist/assets/Layout-zCby5tnj.css ===
+.layout-container[data-v-d14225f8]{height:100vh}.logo[data-v-d14225f8]{height:60px;display:flex;align-items:center;justify-content:center;background-color:#2b2f3a;color:#fff}.logo h2[data-v-d14225f8]{margin:0;font-size:18px}.sidebar-menu[data-v-d14225f8]{border:none;height:calc(100vh - 60px)}.header[data-v-d14225f8]{display:flex;align-items:center;justify-content:space-between;background-color:#fff;border-bottom:1px solid #e6e6e6;padding:0 20px}.user-info[data-v-d14225f8]{display:flex;align-items:center;cursor:pointer;color:#606266}.main-content[data-v-d14225f8]{background-color:#f5f7fa;padding:20px}
+
+
+

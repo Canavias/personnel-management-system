@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/snakeCase.d.ts ===
+import { snakeCase } from "lodash";
+export default snakeCase;
+
+
+

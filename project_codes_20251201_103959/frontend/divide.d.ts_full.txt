@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/divide.d.ts ===
+import { divide } from "lodash";
+export default divide;
+
+
+

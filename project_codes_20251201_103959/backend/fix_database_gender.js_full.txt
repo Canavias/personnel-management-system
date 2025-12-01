@@ -1,0 +1,75 @@
+=== ./backend/fix_database_gender.js ===
+const mysql = require('mysql2/promise');
+
+async function fixDatabaseGender() {
+  console.log('🔧 开始修复数据库性别字段...');
+  
+  const pool = mysql.createPool({
+    user: 'canavias_admin',
+    password: 'rw7719lxy',
+    database: 'personnel_management_system',
+    socketPath: '/run/mysqld/mysqld.sock',
+    charset: 'utf8mb4'
+  });
+  
+  try {
+    // 1. 先查看当前数据
+    console.log('📊 查看当前成员性别数据:');
+    const [rows] = await pool.execute('SELECT id, name, gender FROM members ORDER BY id');
+    
+    rows.forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别: ${row.gender} (原始值)`);
+    });
+    
+    // 2. 修复性别字段 - 临时将乱码转换为数字
+    console.log('\n🔄 修复性别字段...');
+    
+    // 将乱码的"男"(ç”·)转换为数字1
+    await pool.execute("UPDATE members SET gender = '1' WHERE gender = 'ç”·' OR gender = 1");
+    
+    // 将乱码的"女"(å¥³)转换为数字2
+    await pool.execute("UPDATE members SET gender = '2' WHERE gender = 'å¥³' OR gender = 2");
+    
+    // 将乱码的"其他"(å…¶ä»–)转换为数字3
+    await pool.execute("UPDATE members SET gender = '3' WHERE gender = 'å…¶ä»–' OR gender = 3");
+    
+    // 3. 修改表结构，将enum改为tinyint
+    console.log('\n🏗️ 修改表结构...');
+    
+    // 备份原来的数据
+    await pool.execute('CREATE TABLE IF NOT EXISTS members_backup SELECT * FROM members');
+    
+    // 修改gender字段类型
+    await pool.execute(`
+      ALTER TABLE members 
+      MODIFY COLUMN gender TINYINT(1) NOT NULL DEFAULT 1
+      COMMENT '1:男, 2:女, 3:其他'
+    `);
+    
+    // 4. 验证修复结果
+    console.log('\n✅ 修复完成，验证结果:');
+    const [fixedRows] = await pool.execute('SELECT id, name, gender FROM members ORDER BY id');
+    
+    fixedRows.forEach(row => {
+      let genderText;
+      if (row.gender === 1) genderText = '男';
+      else if (row.gender === 2) genderText = '女';
+      else if (row.gender === 3) genderText = '其他';
+      else genderText = '未知';
+      
+      console.log(`  ID ${row.id}: ${row.name} - 性别: ${genderText} (存储值: ${row.gender})`);
+    });
+    
+    console.log('\n🎉 数据库性别字段修复完成！');
+    
+  } catch (error) {
+    console.error('❌ 修复失败:', error);
+  } finally {
+    await pool.end();
+  }
+}
+
+fixDatabaseGender();
+
+
+

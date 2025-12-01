@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/map.d.ts ===
+import { map } from "lodash";
+export default map;
+
+
+

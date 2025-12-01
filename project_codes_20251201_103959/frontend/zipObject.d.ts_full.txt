@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/zipObject.d.ts ===
+import { zipObject } from "lodash";
+export default zipObject;
+
+
+

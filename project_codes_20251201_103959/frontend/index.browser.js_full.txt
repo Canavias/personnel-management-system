@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/vue/compiler-sfc/index.browser.js ===
+module.exports = require('@vue/compiler-sfc')
+
+
+

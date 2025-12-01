@@ -1,0 +1,169 @@
+=== ./backend/routes/performance.js ===
+const express = require('express');
+const router = express.Router();
+const db = require('../config/database');
+
+// 获取绩效评估表（排除站长、部长、副部长）
+router.get('/', async (req, res) => {
+  try {
+    console.log('🔍 开始获取绩效评估表...');
+    
+    // 直接使用已知的角色ID进行排除
+    const excludeRoleIds = [1, 2, 3]; // 站长、部长、副部长
+    
+    const placeholders = excludeRoleIds.map(() => '?').join(',');
+    
+    console.log('排除的角色ID:', excludeRoleIds);
+    
+    // 查询绩效数据 - 使用正确的字段名 title
+    const [performance] = await db.pool.execute(`
+      SELECT 
+        m.id,
+        m.name,
+        m.gender,
+        m.grade,
+        m.department_id,
+        d.name as department_name,
+        m.role_id,
+        r.title as role_name,  -- 修正为 title 字段
+        COALESCE(p.score, 0) as performance_score,
+        COALESCE(p.comments, '') as performance_comments,
+        COALESCE(p.evaluated_at, NOW()) as evaluated_at
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      LEFT JOIN performance p ON m.id = p.member_id
+      WHERE m.role_id NOT IN (${placeholders})
+        AND m.is_active = 1
+      ORDER BY d.name, m.name
+    `, excludeRoleIds);
+    
+    console.log('✅ 绩效评估表查询成功，数量:', performance.length);
+    
+    res.json({
+      success: true,
+      data: performance,
+      total: performance.length
+    });
+  } catch (error) {
+    console.error('❌ 获取绩效评估表失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取绩效评估表失败',
+      message: error.message
+    });
+  }
+});
+
+// 按绩效评分排序
+router.get('/sorted/:order', async (req, res) => {
+  try {
+    const order = req.params.order.toUpperCase();
+    const validOrders = ['ASC', 'DESC'];
+    
+    if (!validOrders.includes(order)) {
+      return res.status(400).json({
+        success: false,
+        error: '排序参数无效，请使用 ASC 或 DESC'
+      });
+    }
+    
+    console.log(`🔍 开始获取按绩效${order === 'ASC' ? '升序' : '降序'}排列的数据...`);
+    
+    const excludeRoleIds = [1, 2, 3];
+    const placeholders = excludeRoleIds.map(() => '?').join(',');
+    
+    const [performance] = await db.pool.execute(`
+      SELECT 
+        m.id,
+        m.name,
+        m.gender,
+        m.grade,
+        m.department_id,
+        d.name as department_name,
+        m.role_id,
+        r.title as role_name,  -- 修正为 title 字段
+        COALESCE(p.score, 0) as performance_score,
+        COALESCE(p.comments, '') as performance_comments,
+        COALESCE(p.evaluated_at, NOW()) as evaluated_at
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      LEFT JOIN performance p ON m.id = p.member_id
+      WHERE m.role_id NOT IN (${placeholders})
+        AND m.is_active = 1
+      ORDER BY performance_score ${order}, d.name, m.name
+    `, excludeRoleIds);
+    
+    console.log(`✅ 按绩效${order === 'ASC' ? '升序' : '降序'}排列成功，数量:`, performance.length);
+    
+    res.json({
+      success: true,
+      data: performance,
+      total: performance.length,
+      order: order
+    });
+  } catch (error) {
+    console.error('❌ 获取排序绩效数据失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取排序绩效数据失败',
+      message: error.message
+    });
+  }
+});
+
+// 按部门获取绩效数据
+router.get('/departments/:id', async (req, res) => {
+  try {
+    const departmentId = req.params.id;
+    console.log(`🔍 开始获取部门 ${departmentId} 的绩效数据...`);
+    
+    const excludeRoleIds = [1, 2, 3];
+    const placeholders = excludeRoleIds.map(() => '?').join(',');
+    
+    const [performance] = await db.pool.execute(`
+      SELECT 
+        m.id,
+        m.name,
+        m.gender,
+        m.grade,
+        m.department_id,
+        d.name as department_name,
+        m.role_id,
+        r.title as role_name,  -- 修正为 title 字段
+        COALESCE(p.score, 0) as performance_score,
+        COALESCE(p.comments, '') as performance_comments,
+        COALESCE(p.evaluated_at, NOW()) as evaluated_at
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      LEFT JOIN performance p ON m.id = p.member_id
+      WHERE m.department_id = ?
+        AND m.role_id NOT IN (${placeholders})
+        AND m.is_active = 1
+      ORDER BY m.name
+    `, [departmentId, ...excludeRoleIds]);
+    
+    console.log(`✅ 部门 ${departmentId} 绩效数据查询成功，数量:`, performance.length);
+    
+    res.json({
+      success: true,
+      data: performance,
+      total: performance.length,
+      department_id: parseInt(departmentId)
+    });
+  } catch (error) {
+    console.error('❌ 获取部门绩效数据失败:', error.message);
+    res.status(500).json({ 
+      success: false,
+      error: '获取部门绩效数据失败',
+      message: error.message
+    });
+  }
+});
+
+module.exports = router;
+
+
+

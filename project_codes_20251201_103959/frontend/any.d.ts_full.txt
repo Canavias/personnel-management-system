@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/async-validator/dist-types/validator/any.d.ts ===
+import { ExecuteValidator } from '../interface';
+declare const any: ExecuteValidator;
+export default any;
+
+
+

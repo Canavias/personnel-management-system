@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash-es/extend.js ===
+export { default } from './assignIn.js'
+
+
+

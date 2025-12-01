@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/vue-router/node_modules/@vue/devtools-api/lib/esm/time.d.ts ===
+export declare function isPerformanceSupported(): boolean;
+export declare function now(): number;
+
+
+

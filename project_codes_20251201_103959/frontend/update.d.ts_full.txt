@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/update.d.ts ===
+import { update } from "lodash";
+export default update;
+
+
+

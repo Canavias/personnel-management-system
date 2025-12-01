@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/source-map-js/lib/source-map-consumer.d.ts ===
+export { SourceMapConsumer } from '..';
+
+
+

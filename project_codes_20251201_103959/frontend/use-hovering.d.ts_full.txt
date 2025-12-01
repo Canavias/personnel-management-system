@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/element-plus/lib/components/input-tag/src/composables/use-hovering.d.ts ===
+export declare function useHovering(): {
+    hovering: import("vue").Ref<boolean>;
+    handleMouseEnter: () => void;
+    handleMouseLeave: () => void;
+};
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/unary.d.ts ===
+import { unary } from "lodash";
+export default unary;
+
+
+

@@ -1,0 +1,4 @@
+=== ./frontend/node_modules/element-plus/theme-chalk/el-overlay.css ===
+.el-overlay{background-color:var(--el-overlay-color-lighter);bottom:0;height:100%;left:0;overflow:auto;position:fixed;right:0;top:0;z-index:2000}.el-overlay .el-overlay-root{height:0}
+
+

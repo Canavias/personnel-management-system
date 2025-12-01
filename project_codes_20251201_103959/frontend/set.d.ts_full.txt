@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/set.d.ts ===
+import { set } from "lodash";
+export default set;
+
+
+

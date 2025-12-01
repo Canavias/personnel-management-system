@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/trimCharsEnd.d.ts ===
+import { trimCharsEnd } from "../fp";
+export = trimCharsEnd;
+
+
+

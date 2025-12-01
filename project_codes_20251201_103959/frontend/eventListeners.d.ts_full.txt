@@ -1,0 +1,12 @@
+=== ./frontend/node_modules/@popperjs/core/lib/modifiers/eventListeners.d.ts ===
+import type { Modifier } from "../types";
+export declare type Options = {
+    scroll: boolean;
+    resize: boolean;
+};
+export declare type EventListenersModifier = Modifier<"eventListeners", Options>;
+declare const _default: EventListenersModifier;
+export default _default;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/minBy.d.ts ===
+import { minBy } from "lodash";
+export default minBy;
+
+
+

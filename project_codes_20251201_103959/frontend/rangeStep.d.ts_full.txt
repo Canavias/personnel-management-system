@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/rangeStep.d.ts ===
+import { rangeStep } from "../fp";
+export = rangeStep;
+
+
+

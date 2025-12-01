@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@vue/language-core/lib/codegen/script/src.d.ts ===
+import type { Code, SfcBlockAttr } from '../../types';
+export declare function generateSrc(src: SfcBlockAttr): Generator<Code>;
+
+
+

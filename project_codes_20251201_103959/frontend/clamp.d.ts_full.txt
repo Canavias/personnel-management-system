@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/clamp.d.ts ===
+import { clamp } from "lodash";
+export default clamp;
+
+
+

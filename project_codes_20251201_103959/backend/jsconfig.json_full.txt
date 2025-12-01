@@ -1,0 +1,11 @@
+=== ./backend/node_modules/nodemon/jsconfig.json ===
+{
+  "compilerOptions": {
+    "typeRoots": ["./index.d.ts", "./node_modules/@types"],
+    "checkJs": true
+  },
+  "exclude": ["node_modules"]
+}
+
+
+

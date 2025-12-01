@@ -1,0 +1,153 @@
+=== ./frontend/src/views/LoginView.vue ===
+<template>
+  <div class="login-container">
+    <div class="login-form">
+      <h2>人员名单管理系统</h2>
+      <p class="subtitle">Personnel Management System</p>
+      
+      <el-form
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginRules"
+        class="login-form-content"
+      >
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            placeholder="用户名"
+            size="large"
+            :prefix-icon="User"
+          />
+        </el-form-item>
+        
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            placeholder="密码"
+            size="large"
+            :prefix-icon="Lock"
+            @keyup.enter="handleLogin"
+          />
+        </el-form-item>
+        
+        <el-form-item>
+          <el-button
+            type="primary"
+            size="large"
+            :loading="loading"
+            @click="handleLogin"
+            class="login-button"
+          >
+            {{ loading ? '登录中...' : '登录' }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+      
+      <div class="test-account">
+        <p>测试账号:</p>
+        <p>用户名: <strong>test</strong></p>
+        <p>密码: <strong>123456</strong></p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { User, Lock } from '@element-plus/icons-vue'
+import { useUserStore } from '@/stores/user'
+
+const router = useRouter()
+const userStore = useUserStore()
+const loginFormRef = ref<FormInstance>()
+const loading = ref(false)
+
+const loginForm = reactive({
+  username: 'test',
+  password: '123456'
+})
+
+const loginRules: FormRules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' }
+  ]
+}
+
+const handleLogin = async () => {
+  if (!loginFormRef.value) return
+
+  const valid = await loginFormRef.value.validate().catch(() => false)
+  if (!valid) return
+
+  loading.value = true
+  try {
+    console.log('🔐 Starting login process...')
+    await userStore.login(loginForm)
+    console.log('✅ Login process completed')
+  } catch (error: any) {
+    console.error('❌ Login error:', error)
+    ElMessage.error(error.response?.data?.message || error.message || '登录失败')
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.login-form-content {
+  margin-bottom: 20px;
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.test-account {
+  background: #f5f7fa;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.test-account p {
+  margin: 5px 0;
+}
+</style>
+
+
+

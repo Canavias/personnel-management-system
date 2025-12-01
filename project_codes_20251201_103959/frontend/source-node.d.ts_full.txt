@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/source-map-js/lib/source-node.d.ts ===
+export { SourceNode } from '..';
+
+
+

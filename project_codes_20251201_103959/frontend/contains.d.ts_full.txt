@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/dom-utils/contains.d.ts ===
+export default function contains(parent: Element, child: Element): boolean;
+
+
+

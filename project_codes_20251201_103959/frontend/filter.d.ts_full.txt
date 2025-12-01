@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/filter.d.ts ===
+import { filter } from "lodash";
+export default filter;
+
+
+

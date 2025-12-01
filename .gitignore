@@ -1,0 +1,39 @@
+# 依赖目录 - 最重要，它们可以通过 package.json 重新安装
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 环境变量文件 - 包含密码等敏感信息，绝对不能上传
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 构建输出目录
+dist/
+build/
+out/
+
+# 日志文件
+*.log
+logs/
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 数据库文件
+*.sqlite
+*.db
+
+# 之前发现的超大文件
+all_code.txt

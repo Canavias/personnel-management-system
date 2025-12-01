@@ -1,0 +1,21 @@
+=== ./frontend/node_modules/element-plus/lib/components/icon/src/icon2.js ===
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var runtime = require('../../../utils/vue/props/runtime.js');
+
+const iconProps = runtime.buildProps({
+  size: {
+    type: runtime.definePropType([Number, String])
+  },
+  color: {
+    type: String
+  }
+});
+
+exports.iconProps = iconProps;
+//# sourceMappingURL=icon2.js.map
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/nAry.d.ts ===
+import { nAry } from "../fp";
+export = nAry;
+
+
+

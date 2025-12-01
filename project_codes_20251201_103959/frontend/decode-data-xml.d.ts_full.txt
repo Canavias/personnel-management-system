@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/entities/lib/esm/generated/decode-data-xml.d.ts ===
+declare const _default: Uint16Array;
+export default _default;
+//# sourceMappingURL=decode-data-xml.d.ts.map
+
+

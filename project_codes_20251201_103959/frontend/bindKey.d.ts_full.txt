@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/bindKey.d.ts ===
+import { bindKey } from "lodash";
+export default bindKey;
+
+
+

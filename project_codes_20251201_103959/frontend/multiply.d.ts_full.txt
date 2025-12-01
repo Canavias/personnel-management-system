@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/multiply.d.ts ===
+import { multiply } from "lodash";
+export default multiply;
+
+
+

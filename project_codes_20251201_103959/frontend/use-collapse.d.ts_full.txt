@@ -1,0 +1,13 @@
+=== ./frontend/node_modules/element-plus/lib/components/collapse/src/use-collapse.d.ts ===
+import type { SetupContext } from 'vue';
+import type { CollapseActiveName, CollapseEmits, CollapseProps } from './collapse';
+export declare const useCollapse: (props: CollapseProps, emit: SetupContext<CollapseEmits>["emit"]) => {
+    activeNames: import("vue").Ref<(string | number)[]>;
+    setActiveNames: (_activeNames: CollapseActiveName[]) => void;
+};
+export declare const useCollapseDOM: (props: CollapseProps) => {
+    rootKls: import("vue").ComputedRef<string[]>;
+};
+
+
+

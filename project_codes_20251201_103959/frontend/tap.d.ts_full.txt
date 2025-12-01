@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/tap.d.ts ===
+import { tap } from "lodash";
+export default tap;
+
+
+

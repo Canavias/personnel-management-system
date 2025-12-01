@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/sum.d.ts ===
+import { sum } from "lodash";
+export default sum;
+
+
+

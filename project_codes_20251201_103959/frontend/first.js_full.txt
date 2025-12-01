@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash-es/first.js ===
+export { default } from './head.js'
+
+
+

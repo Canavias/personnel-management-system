@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/pull.d.ts ===
+import { pull } from "lodash";
+export default pull;
+
+
+

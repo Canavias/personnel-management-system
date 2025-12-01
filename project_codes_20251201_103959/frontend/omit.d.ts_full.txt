@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/omit.d.ts ===
+import { omit } from "lodash";
+export default omit;
+
+
+

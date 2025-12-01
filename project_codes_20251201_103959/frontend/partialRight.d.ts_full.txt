@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/partialRight.d.ts ===
+import { partialRight } from "lodash";
+export default partialRight;
+
+
+

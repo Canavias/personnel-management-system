@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isPromise.d.ts ===
+/** Returns whether the payload is a Promise */
+export declare function isPromise(payload: unknown): payload is Promise<unknown>;
+
+
+

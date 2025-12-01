@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/functionsIn.d.ts ===
+import { functionsIn } from "lodash";
+export default functionsIn;
+
+
+

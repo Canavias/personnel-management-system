@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/includesFrom.d.ts ===
+import { includesFrom } from "../fp";
+export = includesFrom;
+
+
+

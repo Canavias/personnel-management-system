@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/components/menu/src/use-menu-color.d.ts ===
+import type { MenuProps } from './menu';
+export default function useMenuColor(props: MenuProps): import("vue").ComputedRef<string>;
+
+
+

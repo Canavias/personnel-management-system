@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/parseInt.d.ts ===
+import { parseInt } from "lodash";
+export default parseInt;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/zipObj.d.ts ===
+import { zipObj } from "../fp";
+export = zipObj;
+
+
+

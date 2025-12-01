@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash-es/entriesIn.js ===
+export { default } from './toPairsIn.js'
+
+
+

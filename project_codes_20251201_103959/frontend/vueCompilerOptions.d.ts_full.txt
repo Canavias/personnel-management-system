@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@vue/language-core/lib/parsers/vueCompilerOptions.d.ts ===
+import type { RawVueCompilerOptions } from '../types';
+export declare function parseVueCompilerOptions(comments: string[]): RawVueCompilerOptions | undefined;
+
+
+

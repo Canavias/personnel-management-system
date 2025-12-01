@@ -1,0 +1,13 @@
+=== ./backend/node_modules/mysql2/lib/create_pool_cluster.js ===
+'use strict';
+
+const PoolCluster = require('./pool_cluster.js');
+
+function createPoolCluster(config) {
+  return new PoolCluster(config);
+}
+
+module.exports = createPoolCluster;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@vue/language-core/lib/utils/vue2TemplateCompiler.d.ts ===
+import * as CompilerDOM from '@vue/compiler-dom';
+export declare const compile: typeof CompilerDOM.compile;
+
+
+

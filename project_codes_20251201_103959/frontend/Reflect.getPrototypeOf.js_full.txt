@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/get-proto/Reflect.getPrototypeOf.js ===
+'use strict';
+
+/** @type {import('./Reflect.getPrototypeOf')} */
+module.exports = (typeof Reflect !== 'undefined' && Reflect.getPrototypeOf) || null;
+
+
+

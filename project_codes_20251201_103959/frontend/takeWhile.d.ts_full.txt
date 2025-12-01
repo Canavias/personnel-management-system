@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/takeWhile.d.ts ===
+import { takeWhile } from "lodash";
+export default takeWhile;
+
+
+

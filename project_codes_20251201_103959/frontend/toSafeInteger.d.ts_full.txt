@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toSafeInteger.d.ts ===
+import { toSafeInteger } from "lodash";
+export default toSafeInteger;
+
+
+

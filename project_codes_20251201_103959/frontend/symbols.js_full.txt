@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/postcss/lib/symbols.js ===
+'use strict'
+
+module.exports.isClean = Symbol('isClean')
+
+module.exports.my = Symbol('my')
+
+
+

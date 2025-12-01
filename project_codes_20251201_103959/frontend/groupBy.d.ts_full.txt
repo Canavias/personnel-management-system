@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/groupBy.d.ts ===
+import { groupBy } from "lodash";
+export default groupBy;
+
+
+

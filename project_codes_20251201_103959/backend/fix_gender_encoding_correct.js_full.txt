@@ -1,0 +1,80 @@
+=== ./backend/fix_gender_encoding_correct.js ===
+const mysql = require('mysql2');
+
+// 使用与项目相同的数据库配置
+const dbConfig = {
+  user: 'canavias_admin',
+  password: 'rw7719lxy',
+  database: 'personnel_management_system',
+  socketPath: '/run/mysqld/mysqld.sock',
+  charset: 'utf8mb4',
+  timezone: '+08:00'
+};
+
+async function fixGenderEncoding() {
+  const pool = mysql.createPool(dbConfig);
+  
+  try {
+    console.log('🔧 开始修复性别字段编码问题...');
+
+    // 首先检查当前数据
+    const [rows] = await pool.promise().execute('SELECT id, name, gender FROM members');
+    console.log('📊 当前成员性别数据:');
+    rows.forEach(row => {
+      console.log(`  ID ${row.id}: ${row.name} - 性别值: ${row.gender} (类型: ${typeof row.gender})`);
+    });
+
+    // 修复性别字段 - 直接设置正确的整数值
+    console.log('🔄 修复性别字段...');
+    
+    // 方法1：直接更新为正确的整数值
+    const updateQueries = [
+      "UPDATE members SET gender = 1 WHERE gender = '男' OR gender = 1",
+      "UPDATE members SET gender = 2 WHERE gender = '女' OR gender = 2", 
+      "UPDATE members SET gender = 3 WHERE gender = '其他' OR gender = 3"
+    ];
+    
+    for (const query of updateQueries) {
+      const [result] = await pool.promise().execute(query);
+      console.log(`  执行: ${query} - 影响行数: ${result.affectedRows}`);
+    }
+    
+    // 方法2：对于乱码数据，根据ID手动设置
+    const manualUpdates = [
+      [1, 5],   // ID 5 设置为男
+      [2, 7],   // ID 7 设置为男  
+      [1, 8],   // ID 8 设置为男
+      [1, 9],   // ID 9 设置为男
+      [1, 10],  // ID 10 设置为男
+      [1, 11],  // ID 11 设置为男
+      [2, 12],  // ID 12 设置为女（测试用）
+      [1, 13],  // ID 13 设置为男
+      [1, 14]   // ID 14 设置为男
+    ];
+    
+    for (const [genderValue, id] of manualUpdates) {
+      await pool.promise().execute('UPDATE members SET gender = ? WHERE id = ?', [genderValue, id]);
+      console.log(`  设置ID ${id} 的性别为: ${genderValue}`);
+    }
+
+    // 验证修复结果
+    const [fixedRows] = await pool.promise().execute('SELECT id, name, gender FROM members ORDER BY id');
+    console.log('✅ 修复后的成员性别数据:');
+    fixedRows.forEach(row => {
+      const genderText = row.gender === 1 ? '男' : row.gender === 2 ? '女' : '其他';
+      console.log(`  ID ${row.id}: ${row.name} - 性别: ${genderText} (存储值: ${row.gender})`);
+    });
+
+    console.log('🎉 性别字段编码修复完成！');
+    
+  } catch (error) {
+    console.error('修复失败:', error);
+  } finally {
+    pool.end();
+  }
+}
+
+fixGenderEncoding();
+
+
+

@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/debounce.d.ts ===
+export default function debounce<T>(fn: (...args: Array<any>) => any): () => Promise<T>;
+
+
+

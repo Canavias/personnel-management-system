@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/defaultsDeep.d.ts ===
+import { defaultsDeep } from "lodash";
+export default defaultsDeep;
+
+
+

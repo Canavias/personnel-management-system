@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/format.d.ts ===
+export default function format(str: string, ...args: Array<string>): string;
+
+
+

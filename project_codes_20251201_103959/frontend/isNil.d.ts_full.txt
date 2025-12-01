@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isNil.d.ts ===
+import { isNil } from "lodash";
+export default isNil;
+
+
+

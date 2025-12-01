@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/lodash-es/_reEscape.js ===
+/** Used to match template delimiters. */
+var reEscape = /<%-([\s\S]+?)%>/g;
+
+export default reEscape;
+
+
+

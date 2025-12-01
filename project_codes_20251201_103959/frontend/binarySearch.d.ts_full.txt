@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/@volar/source-map/lib/binarySearch.d.ts ===
+export declare function binarySearch(values: number[], searchValue: number): {
+    low: number;
+    high: number;
+    match: number | undefined;
+};
+
+
+

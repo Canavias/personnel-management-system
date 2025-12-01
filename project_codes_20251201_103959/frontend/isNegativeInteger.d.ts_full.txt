@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isNegativeInteger.d.ts ===
+/** Returns whether the payload is a negative Integer (but not 0) */
+export declare function isNegativeInteger(payload: unknown): payload is number;
+
+
+

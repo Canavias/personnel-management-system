@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/element-plus/lib/components/table-v2/src/renderers/overlay.d.ts ===
+import type { SimpleFunctionalComponent } from '../types';
+declare const Overlay: SimpleFunctionalComponent;
+export default Overlay;
+
+
+

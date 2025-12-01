@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/anyPass.d.ts ===
+import { anyPass } from "../fp";
+export = anyPass;
+
+
+

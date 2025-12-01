@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/call-bind-apply-helpers/functionApply.js ===
+'use strict';
+
+/** @type {import('./functionApply')} */
+module.exports = Function.prototype.apply;
+
+
+

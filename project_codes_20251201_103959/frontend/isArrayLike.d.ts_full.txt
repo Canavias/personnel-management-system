@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isArrayLike.d.ts ===
+import { isArrayLike } from "lodash";
+export default isArrayLike;
+
+
+

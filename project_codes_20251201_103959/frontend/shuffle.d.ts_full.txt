@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/shuffle.d.ts ===
+import { shuffle } from "lodash";
+export default shuffle;
+
+
+

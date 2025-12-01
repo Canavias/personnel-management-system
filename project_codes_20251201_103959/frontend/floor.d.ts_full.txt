@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/floor.d.ts ===
+import { floor } from "lodash";
+export default floor;
+
+
+

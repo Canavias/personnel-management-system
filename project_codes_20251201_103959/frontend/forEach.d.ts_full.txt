@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/forEach.d.ts ===
+import { forEach } from "lodash";
+export default forEach;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/split.d.ts ===
+import { split } from "lodash";
+export default split;
+
+
+

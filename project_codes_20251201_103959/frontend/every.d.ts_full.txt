@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/every.d.ts ===
+import { every } from "lodash";
+export default every;
+
+
+

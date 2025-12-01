@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/extendAll.d.ts ===
+import { extendAll } from "../fp";
+export = extendAll;
+
+
+

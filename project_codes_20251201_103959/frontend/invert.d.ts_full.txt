@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/invert.d.ts ===
+import { invert } from "lodash";
+export default invert;
+
+
+

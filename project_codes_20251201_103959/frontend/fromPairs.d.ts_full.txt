@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/fromPairs.d.ts ===
+import { fromPairs } from "lodash";
+export default fromPairs;
+
+
+

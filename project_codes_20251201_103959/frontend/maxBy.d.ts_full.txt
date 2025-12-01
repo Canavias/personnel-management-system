@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/maxBy.d.ts ===
+import { maxBy } from "lodash";
+export default maxBy;
+
+
+

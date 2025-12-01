@@ -1,0 +1,20 @@
+=== ./frontend/node_modules/element-plus/lib/components/color-picker-panel/src/props/sv-panel.js ===
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var runtime = require('../../../../utils/vue/props/runtime.js');
+
+const svPanelProps = runtime.buildProps({
+  color: {
+    type: runtime.definePropType(Object),
+    required: true
+  },
+  disabled: Boolean
+});
+
+exports.svPanelProps = svPanelProps;
+//# sourceMappingURL=sv-panel.js.map
+
+
+

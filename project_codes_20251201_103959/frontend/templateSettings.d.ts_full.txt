@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/templateSettings.d.ts ===
+import { templateSettings } from "lodash";
+export default templateSettings;
+
+
+

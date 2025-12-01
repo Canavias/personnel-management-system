@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/lowerCase.d.ts ===
+import { lowerCase } from "lodash";
+export default lowerCase;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/pathOr.d.ts ===
+import { pathOr } from "../fp";
+export = pathOr;
+
+
+

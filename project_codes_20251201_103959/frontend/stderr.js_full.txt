@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/stderr.js ===
+'use strict'
+
+process.stderr.write('STDERR')
+
+
+

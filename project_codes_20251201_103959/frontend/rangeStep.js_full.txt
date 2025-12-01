@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/lodash/fp/rangeStep.js ===
+var convert = require('./convert'),
+    func = convert('rangeStep', require('../range'));
+
+func.placeholder = require('./placeholder');
+module.exports = func;
+
+
+

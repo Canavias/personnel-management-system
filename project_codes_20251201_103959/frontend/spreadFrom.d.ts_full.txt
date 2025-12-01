@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/spreadFrom.d.ts ===
+import { spreadFrom } from "../fp";
+export = spreadFrom;
+
+
+

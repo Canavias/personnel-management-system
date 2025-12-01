@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/lodash/fp/trimCharsEnd.js ===
+var convert = require('./convert'),
+    func = convert('trimCharsEnd', require('../trimEnd'));
+
+func.placeholder = require('./placeholder');
+module.exports = func;
+
+
+

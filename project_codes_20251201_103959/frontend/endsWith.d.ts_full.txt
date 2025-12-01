@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/endsWith.d.ts ===
+import { endsWith } from "lodash";
+export default endsWith;
+
+
+

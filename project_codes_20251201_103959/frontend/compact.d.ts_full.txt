@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/compact.d.ts ===
+import { compact } from "lodash";
+export default compact;
+
+
+

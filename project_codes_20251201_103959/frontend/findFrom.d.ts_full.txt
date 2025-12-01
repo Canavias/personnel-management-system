@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/findFrom.d.ts ===
+import { findFrom } from "../fp";
+export = findFrom;
+
+
+

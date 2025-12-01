@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/element-plus/lib/utils/vue/refs.d.ts ===
+import type { ComponentPublicInstance, Ref } from 'vue';
+export declare const composeRefs: (...refs: Ref<HTMLElement | undefined>[]) => (el: Element | ComponentPublicInstance | null) => void;
+
+
+

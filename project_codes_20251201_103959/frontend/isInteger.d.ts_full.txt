@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isInteger.d.ts ===
+/** Returns whether the payload is an integer number */
+export declare function isInteger(payload: unknown): payload is number;
+
+
+

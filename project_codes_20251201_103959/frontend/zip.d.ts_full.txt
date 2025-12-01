@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/zip.d.ts ===
+import { zip } from "lodash";
+export default zip;
+
+
+

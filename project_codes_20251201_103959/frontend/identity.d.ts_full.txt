@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/identity.d.ts ===
+import { identity } from "lodash";
+export default identity;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/attempt.d.ts ===
+import { attempt } from "lodash";
+export default attempt;
+
+
+

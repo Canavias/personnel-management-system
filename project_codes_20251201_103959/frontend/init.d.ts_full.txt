@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/init.d.ts ===
+import { init } from "../fp";
+export = init;
+
+
+

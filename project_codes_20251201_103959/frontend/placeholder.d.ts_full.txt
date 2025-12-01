@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@types/lodash/fp/placeholder.d.ts ===
+import _ = require("../index");
+declare const placeholder: _.__;
+export = placeholder;
+
+
+

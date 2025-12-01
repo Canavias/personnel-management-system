@@ -1,0 +1,67 @@
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// 获取所有成员
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.is_active = true
+      ORDER BY m.id
+    `);
+    
+    // 处理字符编码
+    const processedRows = rows.map(row => ({
+      ...row,
+      department_name: row.department_name ? Buffer.from(row.department_name).toString() : row.department_name,
+      role_title: row.role_title ? Buffer.from(row.role_title).toString() : row.role_title
+    }));
+    
+    res.json(processedRows);
+  } catch (error) {
+    console.error('获取成员列表失败:', error);
+    res.status(500).json({ error: '获取成员列表失败' });
+  }
+});
+
+// 更新成员信息
+router.put('/:id', async (req, res) => {
+  const memberId = req.params.id;
+  const { name, gender, grade, student_id, phone, email, department_id, role_id } = req.body;
+  
+  try {
+    console.log('更新成员请求:', req.body);
+    
+    // 如果是站长角色，department_id应该为null
+    let actualDepartmentId = department_id;
+    if (role_id === 1) { // 假设1是站长角色ID
+      actualDepartmentId = null;
+    }
+    
+    const [result] = await pool.execute(
+      `UPDATE members 
+       SET name = ?, gender = ?, grade = ?, student_id = ?, phone = ?, email = ?, 
+           department_id = ?, role_id = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [name, gender, grade, student_id, phone, email, actualDepartmentId, role_id, memberId]
+    );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    res.json({ message: '成员信息更新成功' });
+  } catch (error) {
+    console.error('更新成员失败:', error);
+    res.status(500).json({ error: `更新成员失败: ${error.message}` });
+  }
+});
+
+module.exports = router;

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/intersection.d.ts ===
+import { intersection } from "lodash";
+export default intersection;
+
+
+

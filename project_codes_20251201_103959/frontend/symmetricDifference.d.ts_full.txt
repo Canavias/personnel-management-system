@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/symmetricDifference.d.ts ===
+import { symmetricDifference } from "../fp";
+export = symmetricDifference;
+
+
+

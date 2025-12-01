@@ -1,0 +1,375 @@
+<template>
+  <div class="members">
+    <div class="header">
+      <h1>成员管理</h1>
+      <el-button type="primary" @click="handleAddMember">
+        添加成员
+      </el-button>
+    </div>
+
+    <!-- 搜索和筛选 -->
+    <el-card class="filter-card">
+      <div class="filter-row">
+        <el-input
+          v-model="searchKeyword"
+          placeholder="按姓名搜索"
+          style="width: 200px; margin-right: 10px;"
+          @input="handleSearch"
+        >
+          <template #prefix>
+            <el-icon><Search /></el-icon>
+          </template>
+        </el-input>
+        
+        <el-select 
+          v-model="selectedDepartment" 
+          placeholder="选择部门" 
+          style="width: 150px; margin-right: 10px;"
+          @change="handleFilter"
+        >
+          <el-option label="所有部门" value=""></el-option>
+          <el-option label="无部门" value="0"></el-option>
+          <el-option label="程序部" value="1"></el-option>
+          <el-option label="游戏部" value="2"></el-option>
+          <el-option label="Web部" value="3"></el-option>
+          <el-option label="UI部" value="4"></el-option>
+          <el-option label="App部" value="5"></el-option>
+          <el-option label="iOS部" value="7"></el-option>
+          <el-option label="精英培优班" value="6"></el-option>
+        </el-select>
+
+        <el-select 
+          v-model="selectedRole" 
+          placeholder="选择职位" 
+          style="width: 150px;"
+          @change="handleFilter"
+        >
+          <el-option label="所有职位" value=""></el-option>
+          <el-option label="站长" value="1"></el-option>
+          <el-option label="部长" value="2"></el-option>
+          <el-option label="副部长" value="3"></el-option>
+          <el-option label="负责人" value="4"></el-option>
+          <el-option label="成员" value="5"></el-option>
+        </el-select>
+      </div>
+    </el-card>
+
+    <!-- 统计信息 -->
+    <el-row :gutter="20" class="stats-row">
+      <el-col :span="4">
+        <el-statistic title="总成员数" :value="totalMemberCount" />
+      </el-col>
+      <el-col :span="4">
+        <el-statistic title="站长" :value="roleCounts.stationMaster" />
+      </el-col>
+      <el-col :span="4">
+        <el-statistic title="部长" :value="roleCounts.minister" />
+      </el-col>
+      <el-col :span="4">
+        <el-statistic title="副部长" :value="roleCounts.viceMinister" />
+      </el-col>
+      <el-col :span="4">
+        <el-statistic title="负责人" :value="roleCounts.responsiblePerson" />
+      </el-col>
+      <el-col :span="4">
+        <el-statistic title="普通成员" :value="roleCounts.member" />
+      </el-col>
+    </el-row>
+
+    <!-- 成员表格 -->
+    <el-card class="table-card">
+      <el-table 
+        :data="paginatedMembers" 
+        v-loading="loading"
+        style="width: 100%"
+      >
+        <el-table-column type="index" width="60" label="序号"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="120" sortable></el-table-column>
+        <el-table-column prop="gender" label="性别" width="80"></el-table-column>
+        <el-table-column prop="grade" label="年级" width="100" sortable></el-table-column>
+        <el-table-column prop="department_name" label="部门" width="130">
+          <template #default="{ row }">
+            {{ row.department_name || '无部门' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="role_title" label="职位" width="130" sortable>  <!-- 修复：改为 role_title -->
+          <template #default="{ row }">
+            <el-tag :type="getRoleTagType(row.role_title)" effect="dark">  <!-- 修复：改为 role_title -->
+              {{ row.role_title }}  <!-- 修复：改为 role_title -->
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="电话" width="130">
+          <template #default="{ row }">
+            {{ row.phone || '未填写' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="email" label="邮箱" width="200">
+          <template #default="{ row }">
+            {{ row.email || '未填写' }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="150" fixed="right">
+          <template #default="{ row }">
+            <el-button size="small" @click="handleEditMember(row)">
+              编辑
+            </el-button>
+            <el-button size="small" type="danger" @click="handleDeleteMember(row.id)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页 -->
+      <div class="pagination">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="filteredMembers.length"
+          :pager-count="5"
+          layout="total, sizes, prev, pager, next, jumper"
+          prev-text="上一页"
+          next-text="下一页"
+        />
+      </div>
+    </el-card>
+
+    <!-- 添加/编辑成员对话框 -->
+    <MemberDialog
+      v-model="dialogVisible"
+      :editData="editingMember"
+      
+      @success="handleDialogSuccess"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, watch } from 'vue';
+import { Search } from '@element-plus/icons-vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useMemberStore } from '@/stores/member';
+import MemberDialog from '@/components/MemberDialog.vue';
+
+const memberStore = useMemberStore();
+
+const loading = ref(false);
+const searchKeyword = ref('');
+const selectedDepartment = ref('');
+const selectedRole = ref('');
+const currentPage = ref(1);
+const pageSize = ref(10);
+const dialogVisible = ref(false);
+const editingMember = ref(null);
+const isEdit = ref(false);
+
+// 职位排序
+const roleOrder = {
+  '站长': 1,
+  '部长': 2,
+  '副部长': 3,
+  '负责人': 4,
+  '成员': 5
+};
+
+// 计算属性 - 总成员数应该不受筛选影响
+const totalMemberCount = computed(() => memberStore.members.length);
+
+const filteredMembers = computed(() => {
+  let members = [...memberStore.members];
+
+  // 应用搜索筛选
+  if (searchKeyword.value) {
+    members = members.filter(member => 
+      member.name.toLowerCase().includes(searchKeyword.value.toLowerCase())
+    );
+  }
+
+  // 应用部门筛选
+  if (selectedDepartment.value) {
+    if (selectedDepartment.value === '0') {
+      // 筛选无部门的成员（站长）
+      members = members.filter(member => member.department_id === null);
+    } else {
+      members = members.filter(member => 
+        member.department_id == selectedDepartment.value
+      );
+    }
+  }
+
+  // 应用职位筛选 - 使用 role_id 进行筛选
+  if (selectedRole.value) {
+    members = members.filter(member => 
+      member.role_id == selectedRole.value
+    );
+  }
+
+  // 按职位排序，然后按姓名排序 - 修复：使用 role_title
+  return members.sort((a, b) => {
+    const roleCompare = (roleOrder[a.role_title] || 6) - (roleOrder[b.role_title] || 6);  // 修复：改为 role_title
+    if (roleCompare !== 0) return roleCompare;
+    return a.name.localeCompare(b.name);
+  });
+});
+
+const paginatedMembers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredMembers.value.slice(start, end);
+});
+
+const roleCounts = computed(() => {
+  const counts = {
+    stationMaster: 0,
+    minister: 0,
+    viceMinister: 0,
+    responsiblePerson: 0,
+    member: 0
+  };
+
+  // 使用所有成员计算角色统计，不受筛选影响 - 修复：使用 role_title
+  memberStore.members.forEach(member => {
+    switch (member.role_title) {  // 修复：改为 role_title
+      case '站长':
+        counts.stationMaster++;
+        break;
+      case '部长':
+        counts.minister++;
+        break;
+      case '副部长':
+        counts.viceMinister++;
+        break;
+      case '负责人':
+        counts.responsiblePerson++;
+        break;
+      case '成员':
+        counts.member++;
+        break;
+      default:
+        counts.member++;
+    }
+  });
+
+  return counts;
+});
+
+// 方法 - 修复：使用 role_title
+const getRoleTagType = (role: string) => {
+  switch (role) {
+    case '站长':
+      return 'danger';
+    case '部长':
+      return 'warning';
+    case '副部长':
+      return 'success';
+    case '负责人':
+      return 'primary';
+    case '成员':
+      return 'info';
+    default:
+      return 'info';
+  }
+};
+
+const handleSearch = () => {
+  currentPage.value = 1;
+};
+
+const handleFilter = () => {
+  currentPage.value = 1;
+};
+
+const handleAddMember = () => {
+  editingMember.value = null;
+  isEdit.value = false;
+  dialogVisible.value = true;
+};
+
+const handleEditMember = (member: any) => {
+  editingMember.value = { ...member };
+  isEdit.value = true;
+  dialogVisible.value = true;
+};
+
+const handleDeleteMember = async (id: number) => {
+  try {
+    await ElMessageBox.confirm(
+      '确定要删除这个成员吗？',
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+
+    await memberStore.deleteMember(id);
+  } catch (error) {
+    // 用户取消删除
+  }
+};
+
+const handleDialogSuccess = () => {
+  dialogVisible.value = false;
+};
+
+const loadMembers = async () => {
+  loading.value = true;
+  try {
+    await memberStore.fetchMembers();
+  } catch (error) {
+    console.error('加载数据失败:', error);
+    ElMessage.error('加载成员数据失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 监听器
+watch([searchKeyword, selectedDepartment, selectedRole], () => {
+  currentPage.value = 1;
+});
+
+// 生命周期
+onMounted(() => {
+  loadMembers();
+});
+</script>
+
+<style scoped>
+.members {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-card {
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+}
+
+.stats-row {
+  margin-bottom: 20px;
+}
+
+.table-card {
+  margin-top: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

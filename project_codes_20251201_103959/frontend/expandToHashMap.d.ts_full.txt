@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@popperjs/core/lib/utils/expandToHashMap.d.ts ===
+export default function expandToHashMap<T extends number | string | boolean, K extends string>(value: T, keys: Array<K>): {
+    [key: string]: T;
+};
+
+
+

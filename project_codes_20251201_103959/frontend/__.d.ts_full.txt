@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/@types/lodash/fp/__.d.ts ===
+import _ = require("../index");
+declare const __: _.__;
+export = __;
+
+
+

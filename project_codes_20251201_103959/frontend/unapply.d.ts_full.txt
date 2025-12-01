@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/unapply.d.ts ===
+import { unapply } from "../fp";
+export = unapply;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/axios/lib/helpers/null.js ===
+// eslint-disable-next-line strict
+export default null;
+
+
+

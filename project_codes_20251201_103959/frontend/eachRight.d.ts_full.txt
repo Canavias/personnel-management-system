@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/eachRight.d.ts ===
+import { eachRight } from "lodash";
+export default eachRight;
+
+
+

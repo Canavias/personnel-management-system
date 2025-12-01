@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/hasIn.d.ts ===
+import { hasIn } from "lodash";
+export default hasIn;
+
+
+

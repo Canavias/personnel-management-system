@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toInteger.d.ts ===
+import { toInteger } from "lodash";
+export default toInteger;
+
+
+

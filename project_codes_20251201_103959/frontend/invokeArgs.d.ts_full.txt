@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/invokeArgs.d.ts ===
+import { invokeArgs } from "../fp";
+export = invokeArgs;
+
+
+

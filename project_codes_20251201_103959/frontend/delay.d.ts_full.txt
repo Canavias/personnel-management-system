@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/delay.d.ts ===
+import { delay } from "lodash";
+export default delay;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/indexOfFrom.d.ts ===
+import { indexOfFrom } from "../fp";
+export = indexOfFrom;
+
+
+

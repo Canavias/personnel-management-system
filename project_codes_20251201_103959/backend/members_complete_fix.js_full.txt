@@ -1,0 +1,110 @@
+=== ./backend/routes/members_complete_fix.js ===
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// 获取所有成员
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.is_active = true
+      ORDER BY m.id
+    `);
+    res.json(rows);
+  } catch (error) {
+    console.error('获取成员列表失败:', error);
+    res.status(500).json({ error: '获取成员列表失败' });
+  }
+});
+
+// 获取单个成员
+router.get('/:id', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const [rows] = await pool.execute(`
+      SELECT 
+        m.*,
+        d.name as department_name,
+        r.title as role_title
+      FROM members m
+      LEFT JOIN departments d ON m.department_id = d.id
+      LEFT JOIN roles r ON m.role_id = r.id
+      WHERE m.id = ?
+    `, [memberId]);
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('获取成员详情失败:', error);
+    res.status(500).json({ error: '获取成员详情失败' });
+  }
+});
+
+// 更新成员信息
+router.put('/:id', async (req, res) => {
+  const memberId = req.params.id;
+  const { name, gender, grade, student_id, phone, email, department_id, role_id } = req.body;
+  
+  try {
+    console.log('更新成员请求:', req.body);
+    
+    // 获取角色信息来判断是否是站长
+    let [roleRows] = await pool.execute('SELECT title FROM roles WHERE id = ?', [role_id]);
+    let roleTitle = roleRows[0]?.title;
+    
+    // 如果是站长角色，department_id应该为null
+    let actualDepartmentId = department_id;
+    if (roleTitle === '站长') {
+      actualDepartmentId = null;
+    }
+    
+    const [result] = await pool.execute(
+      `UPDATE members 
+       SET name = ?, gender = ?, grade = ?, student_id = ?, phone = ?, email = ?, 
+           department_id = ?, role_id = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [name, gender, grade, student_id, phone, email, actualDepartmentId, role_id, memberId]
+    );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: '成员不存在' });
+    }
+    
+    res.json({ message: '成员信息更新成功' });
+  } catch (error) {
+    console.error('更新成员失败:', error);
+    res.status(500).json({ error: `更新成员失败: ${error.message}` });
+  }
+});
+
+// 其他成员路由保持不变...
+router.post('/', async (req, res) => {
+  // 添加成员逻辑
+});
+
+router.delete('/:id', async (req, res) => {
+  // 删除成员逻辑
+});
+
+router.get('/department/:id', async (req, res) => {
+  // 按部门查询成员
+});
+
+router.get('/search/:keyword', async (req, res) => {
+  // 搜索成员
+});
+
+module.exports = router;
+
+
+

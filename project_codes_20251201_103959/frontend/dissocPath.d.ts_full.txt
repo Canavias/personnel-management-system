@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/dissocPath.d.ts ===
+import { dissocPath } from "../fp";
+export = dissocPath;
+
+
+

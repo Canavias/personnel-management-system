@@ -1,0 +1,9 @@
+=== ./frontend/node_modules/vue-router/node_modules/@vue/devtools-api/lib/esm/api/context.d.ts ===
+import type { AppRecord } from './api.js';
+export interface Context {
+    currentTab: string;
+    currentAppRecord: AppRecord;
+}
+
+
+

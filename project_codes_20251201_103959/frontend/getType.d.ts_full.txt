@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/getType.d.ts ===
+/** Returns the object type of the given payload */
+export declare function getType(payload: unknown): string;
+
+
+

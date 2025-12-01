@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/isArguments.d.ts ===
+import { isArguments } from "lodash";
+export default isArguments;
+
+
+

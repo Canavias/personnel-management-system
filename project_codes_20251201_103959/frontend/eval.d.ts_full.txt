@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/es-errors/eval.d.ts ===
+declare const EvalError: EvalErrorConstructor;
+
+export = EvalError;
+
+
+

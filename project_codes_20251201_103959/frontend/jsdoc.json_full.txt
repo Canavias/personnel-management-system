@@ -1,0 +1,14 @@
+=== ./frontend/node_modules/npm-run-all2/jsdoc.json ===
+{
+    "source": {
+        "include": ["lib", "README.md"]
+    },
+    "opts": {
+        "destination": "jsdoc",
+        "encoding": "utf8",
+        "recurse": true
+    }
+}
+
+
+

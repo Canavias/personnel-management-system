@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/invertObj.d.ts ===
+import { invertObj } from "../fp";
+export = invertObj;
+
+
+

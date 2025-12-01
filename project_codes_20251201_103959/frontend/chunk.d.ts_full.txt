@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/chunk.d.ts ===
+import { chunk } from "lodash";
+export default chunk;
+
+
+

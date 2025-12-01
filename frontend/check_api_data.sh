@@ -1,0 +1,8 @@
+echo "=== 检查成员API数据结构 ==="
+curl -s http://localhost:3000/api/members | head -20
+
+echo -e "\n=== 检查部门统计API数据结构 ==="
+curl -s http://localhost:3000/api/departments/stats | head -20
+
+echo -e "\n=== 检查第一个成员详细数据 ==="
+curl -s http://localhost:3000/api/members | jq '.[0]' 2>/dev/null || curl -s http://localhost:3000/api/members | python3 -m json.tool | head -30

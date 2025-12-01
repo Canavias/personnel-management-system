@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/sortedIndexBy.d.ts ===
+import { sortedIndexBy } from "lodash";
+export default sortedIndexBy;
+
+
+

@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/rollup/dist/parseAst.d.ts ===
+import type { ParseAst, ParseAstAsync } from './rollup';
+
+export const parseAst: ParseAst;
+export const parseAstAsync: ParseAstAsync;
+
+
+

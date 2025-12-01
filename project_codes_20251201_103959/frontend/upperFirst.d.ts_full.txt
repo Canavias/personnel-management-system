@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/upperFirst.d.ts ===
+import { upperFirst } from "lodash";
+export default upperFirst;
+
+
+

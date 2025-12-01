@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/slice.d.ts ===
+import { slice } from "lodash";
+export default slice;
+
+
+

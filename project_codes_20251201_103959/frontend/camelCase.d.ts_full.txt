@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/camelCase.d.ts ===
+import { camelCase } from "lodash";
+export default camelCase;
+
+
+

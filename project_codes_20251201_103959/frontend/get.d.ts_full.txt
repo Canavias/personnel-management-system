@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/get.d.ts ===
+import { get } from "lodash";
+export default get;
+
+
+

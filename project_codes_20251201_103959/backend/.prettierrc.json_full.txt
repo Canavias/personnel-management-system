@@ -1,0 +1,7 @@
+=== ./backend/node_modules/nodemon/.prettierrc.json ===
+{
+  "singleQuote": true
+}
+
+
+

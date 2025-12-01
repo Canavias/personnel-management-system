@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/element-plus/lib/components/message-box/src/message-box.type.js ===
+'use strict';
+
+//# sourceMappingURL=message-box.type.js.map
+
+
+

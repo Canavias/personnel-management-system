@@ -1,0 +1,5 @@
+=== ./backend/node_modules/duplexer2/node_modules/readable-stream/duplex-browser.js ===
+module.exports = require('./lib/_stream_duplex.js');
+
+
+

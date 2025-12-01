@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/iteratee.d.ts ===
+import { iteratee } from "lodash";
+export default iteratee;
+
+
+

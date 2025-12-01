@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/curryRight.d.ts ===
+import { curryRight } from "lodash";
+export default curryRight;
+
+
+

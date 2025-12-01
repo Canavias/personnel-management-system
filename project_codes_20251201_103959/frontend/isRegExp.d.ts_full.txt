@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/is-what/dist/isRegExp.d.ts ===
+/** Returns whether the payload is a regular expression (RegExp) */
+export declare function isRegExp(payload: unknown): payload is RegExp;
+
+
+

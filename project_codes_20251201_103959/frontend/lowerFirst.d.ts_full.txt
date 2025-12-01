@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/lowerFirst.d.ts ===
+import { lowerFirst } from "lodash";
+export default lowerFirst;
+
+
+

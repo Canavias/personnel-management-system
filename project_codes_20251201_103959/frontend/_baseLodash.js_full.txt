@@ -1,0 +1,14 @@
+=== ./frontend/node_modules/lodash-es/_baseLodash.js ===
+/**
+ * The function whose prototype chain sequence wrappers inherit from.
+ *
+ * @private
+ */
+function baseLodash() {
+  // No operation performed.
+}
+
+export default baseLodash;
+
+
+

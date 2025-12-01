@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/lodash/fp/equals.js ===
+module.exports = require('./isEqual');
+
+
+

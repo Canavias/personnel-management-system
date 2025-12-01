@@ -1,0 +1,21 @@
+
+const http = require('http');
+
+const testUrls = [
+  'http://localhost:3000/health',
+  'http://localhost:3000/api/health',
+  'http://100.64.9.75:3000/health'
+];
+
+testUrls.forEach(url => {
+  console.log(`Testing: ${url}`);
+  const req = http.request(url, (res) => {
+    console.log(`  ✅ ${url} - Status: ${res.statusCode}`);
+  });
+  
+  req.on('error', (err) => {
+    console.log(`  ❌ ${url} - Error: ${err.message}`);
+  });
+  
+  req.end();
+});

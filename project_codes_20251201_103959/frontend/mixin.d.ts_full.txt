@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/mixin.d.ts ===
+import { mixin } from "lodash";
+export default mixin;
+
+
+

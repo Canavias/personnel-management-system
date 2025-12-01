@@ -1,0 +1,8 @@
+=== ./frontend/node_modules/npm-run-all2/test-workspace/tasks/dump.js ===
+'use strict'
+
+const appendResult = require('./lib/util').appendResult
+appendResult(JSON.stringify(process.argv.slice(2)))
+
+
+

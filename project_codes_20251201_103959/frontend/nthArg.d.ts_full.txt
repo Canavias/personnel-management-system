@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/nthArg.d.ts ===
+import { nthArg } from "lodash";
+export default nthArg;
+
+
+

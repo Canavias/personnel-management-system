@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/remove.d.ts ===
+import { remove } from "lodash";
+export default remove;
+
+
+

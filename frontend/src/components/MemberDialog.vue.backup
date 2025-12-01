@@ -1,0 +1,249 @@
+<template>
+  <el-dialog
+    :model-value="visible"
+    @update:model-value="closeDialog"
+    :title="props.editData ? '编辑成员' : '添加成员'"
+    width="600px"
+  >
+    <el-form :model="formData" label-width="100px">
+      <el-form-item label="姓名">
+        <el-input v-model="formData.name" placeholder="请输入姓名" />
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-radio-group v-model="formData.gender">
+          <el-radio label="男">男</el-radio>
+          <el-radio label="女">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="年级">
+        <el-input v-model="formData.grade" placeholder="请输入年级" />
+      </el-form-item>
+      <el-form-item label="电话">
+        <el-input v-model="formData.phone" placeholder="请输入电话" />
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="formData.email" placeholder="请输入邮箱" />
+      </el-form-item>
+      <el-form-item label="部门">
+        <el-select 
+          v-model="formData.department_id" 
+          placeholder="formData.role_id === 1 ? "站长无需选择部门" : "请选择部门""
+          clearable
+          :disabled="formData.role_id === 1"
+        >
+          <el-option
+            v-for="dept in departments"
+            :key="dept.id"
+            :label="dept.name"
+            :value="dept.id"
+          />
+        </el-select>
+        <div v-if="departments.length === 0" style="color: #f56c6c; font-size: 12px;">
+          暂无部门数据，请检查后端API
+        </div>
+      </el-form-item>
+      <el-form-item label="职位">
+        <el-select 
+          v-model="formData.role_id" 
+          placeholder="请选择职位"
+          clearable
+        >
+          <el-option
+            v-for="role in roles"
+            :key="role.id"
+            :label="role.title"
+            :value="role.id"
+          />
+        </el-select>
+        <div v-if="roles.length === 0" style="color: #f56c6c; font-size: 12px;">
+          暂无职位数据，请检查后端API
+        </div>
+      </el-form-item>
+    </el-form>
+    
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="handleSubmit">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script setup lang="ts">
+import { ref, watch, onMounted } from 'vue'
+import { useMemberStore } from '@/stores/member'
+
+interface MemberFormData {
+  name: string
+  gender: string
+  grade: string
+  phone: string
+  email: string
+  department_id: number | null
+  role_id: number | null
+}
+
+interface Department {
+  id: number
+  name: string
+}
+
+interface Role {
+  id: number
+  role_title: string
+}
+
+const props = defineProps<{
+  visible: boolean
+  editData?: any
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void
+  (e: 'success'): void
+}>()
+
+const memberStore = useMemberStore()
+const departments = ref<Department[]>([])
+const roles = ref<Role[]>([])
+
+// 表单数据
+const formData = ref<MemberFormData>({
+  name: '',
+  gender: '',
+  grade: '',
+  phone: '',
+  email: '',
+  department_id: null,
+  role_id: null
+})
+
+// 加载部门和职位数据
+const loadSelectData = async () => {
+  console.log('🔄 开始加载下拉框数据...')
+  
+  try {
+    // 加载部门数据
+    console.log('正在获取部门数据...')
+    await memberStore.fetchDepartments()
+    departments.value = memberStore.departments
+    console.log('✅ 部门数据:', departments.value)
+  } catch (error) {
+    console.error('❌ 加载部门数据失败:', error)
+    departments.value = []
+  }
+  
+  try {
+    // 加载职位数据
+    console.log('正在获取职位数据...')
+    await memberStore.fetchRoles()
+    roles.value = memberStore.roles
+    console.log('✅ 职位数据:', roles.value)
+  } catch (error) {
+    console.error('❌ 加载职位数据失败:', error)
+    roles.value = []
+  }
+}
+
+// 监听编辑数据变化
+watch(() => props.editData, (newVal) => {
+  console.log('📝 编辑数据变化:', newVal)
+  if (newVal) {
+    formData.value = {
+      name: newVal.name || '',
+      gender: newVal.gender || '',
+      grade: newVal.grade || '',
+      phone: newVal.phone || '',
+      email: newVal.email || '',
+      department_id: newVal.department_id || null,
+      role_id: newVal.role_id || null
+    }
+    console.log('✅ 表单数据已填充:', formData.value)
+  } else {
+    // 重置表单
+    formData.value = {
+      name: '',
+      gender: '',
+      grade: '',
+      phone: '',
+      email: '',
+      department_id: null,
+      role_id: null
+    }
+  }
+}, { immediate: true })
+
+// 监听对话框显示状态，显示时加载数据
+watch(() => props.visible, (newVal) => {
+  if (newVal) {
+    console.log('🎯 对话框打开，加载数据...')
+    loadSelectData()
+  }
+})
+
+// 组件挂载时也加载一次数据
+onMounted(() => {
+  console.log('🏗️ MemberDialog 组件已挂载')
+  if (props.visible) {
+    loadSelectData()
+  }
+})
+
+// 关闭对话框
+const closeDialog = () => {
+  console.log('🔒 关闭对话框')
+  emit('update:visible', false)
+}
+
+// 提交表单
+
+// 提交表单
+const handleSubmit = async () => {
+  console.log('📤 提交表单数据:', formData.value)
+  
+  // 确保没有undefined值，转换为null或空字符串
+  const submitData = {
+    name: formData.value.name || '',
+    gender: formData.value.gender || '',
+    grade: formData.value.grade || '',
+    phone: formData.value.phone || '',
+    email: formData.value.email || '',
+    department_id: formData.value.department_id || null,
+    role_id: formData.value.role_id || null
+  }
+  
+  console.log('📤 处理后的提交数据:', submitData)
+  
+  try {
+    if (props.editData) {
+      // 编辑模式
+      await memberStore.updateMember(props.editData.id, submitData)
+    } else {
+      // 添加模式
+      await memberStore.addMember(submitData)
+    }
+    emit('success')
+    closeDialog()
+  } catch (error) {
+    console.error('❌ 提交失败:', error)
+  }
+} else {
+      // 添加模式
+      await memberStore.addMember(formData.value)
+    }
+    emit('success')
+    closeDialog()
+  } catch (error) {
+    console.error('❌ 提交失败:', error)
+  }
+}
+</script>
+
+<style scoped>
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+</style>

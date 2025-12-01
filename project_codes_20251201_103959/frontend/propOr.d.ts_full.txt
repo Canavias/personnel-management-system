@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/propOr.d.ts ===
+import { propOr } from "../fp";
+export = propOr;
+
+
+

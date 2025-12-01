@@ -1,0 +1,5 @@
+-- 修改department_id允许为NULL
+ALTER TABLE members MODIFY department_id INT NULL;
+
+-- 检查修改结果
+DESCRIBE members;

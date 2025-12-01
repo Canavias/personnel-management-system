@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/always.d.ts ===
+import { always } from "../fp";
+export = always;
+
+
+

@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash/fp/assignInAll.d.ts ===
+import { assignInAll } from "../fp";
+export = assignInAll;
+
+
+

@@ -1,0 +1,5 @@
+=== ./frontend/node_modules/minimatch/dist/esm/assert-valid-pattern.d.ts ===
+export declare const assertValidPattern: (pattern: any) => void;
+//# sourceMappingURL=assert-valid-pattern.d.ts.map
+
+

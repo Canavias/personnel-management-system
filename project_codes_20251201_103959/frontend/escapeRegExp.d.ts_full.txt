@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/escapeRegExp.d.ts ===
+import { escapeRegExp } from "lodash";
+export default escapeRegExp;
+
+
+

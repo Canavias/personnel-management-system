@@ -1,0 +1,7 @@
+=== ./frontend/node_modules/async-validator/dist-types/validator/pattern.d.ts ===
+import { ExecuteValidator } from '../interface';
+declare const pattern: ExecuteValidator;
+export default pattern;
+
+
+

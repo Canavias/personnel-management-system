@@ -1,0 +1,6 @@
+=== ./frontend/node_modules/@types/lodash-es/toNumber.d.ts ===
+import { toNumber } from "lodash";
+export default toNumber;
+
+
+
