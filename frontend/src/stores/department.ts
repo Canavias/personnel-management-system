@@ -65,7 +65,13 @@ export const useDepartmentStore = defineStore('department', () => {
       
       console.log('📈 成员数据:', memberStore.members.length, '个成员')
       
-      // 计算每个部门的成员数量
+      // 计算站长数量（无部门的站长）
+      const stationMasterCount = memberStore.members.filter(m => 
+        m.role_id === 1 && m.department_id === null
+      ).length
+      console.log('👑 站长数量:', stationMasterCount)
+      
+      // 计算每个部门的成员数量（排除站长）
       const statsMap = new Map<number, { count: number, name: string, description?: string }>()
       
       // 初始化所有部门
@@ -77,19 +83,9 @@ export const useDepartmentStore = defineStore('department', () => {
         })
       })
       
-      // 统计无部门的成员（站长）
-      const noDeptCount = memberStore.members.filter(m => m.department_id === null).length
-      if (noDeptCount > 0) {
-        statsMap.set(0, {
-          count: noDeptCount,
-          name: '无部门',
-          description: '站长等无部门归属的成员'
-        })
-      }
-      
-      // 统计每个部门的成员
+      // 统计每个部门的成员（排除站长）
       memberStore.members.forEach(member => {
-        if (member.department_id !== null) {
+        if (member.department_id !== null && member.role_id !== 1) {
           const deptId = member.department_id
           const stat = statsMap.get(deptId)
           if (stat) {
@@ -142,6 +138,18 @@ export const useDepartmentStore = defineStore('department', () => {
     }
   }
 
+  // 获取站长统计（单独的方法）
+  const getStationMasterStats = () => {
+    const memberStore = useMemberStore()
+    const stationMasters = memberStore.members.filter(m => 
+      m.role_id === 1 && m.department_id === null
+    )
+    return {
+      count: stationMasters.length,
+      members: stationMasters
+    }
+  }
+
   return {
     departments,
     departmentStats,
@@ -150,6 +158,7 @@ export const useDepartmentStore = defineStore('department', () => {
     fetchDepartments,
     fetchDepartmentStats,
     fetchAllDepartments,
-    fetchDepartmentDetail
+    fetchDepartmentDetail,
+    getStationMasterStats
   }
 })
