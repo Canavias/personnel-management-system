@@ -19,7 +19,18 @@
       </el-form-item>
       
       <el-form-item label="年级" required>
-        <el-input v-model="formData.grade" placeholder="请输入年级" />
+        <el-select 
+          v-model="formData.grade" 
+          placeholder="请选择年级"
+          style="width: 100%"
+        >
+          <el-option label="2020级" value="2020级" />
+          <el-option label="2021级" value="2021级" />
+          <el-option label="2022级" value="2022级" />
+          <el-option label="2023级" value="2023级" />
+          <el-option label="2024级" value="2024级" />
+          <el-option label="2025级" value="2025级" />
+        </el-select>
       </el-form-item>
       
       <el-form-item label="电话">
@@ -36,6 +47,7 @@
           :placeholder="formData.role_id === 1 ? '站长无需选择部门' : '请选择部门'"
           clearable
           :disabled="formData.role_id === 1"
+          style="width: 100%"
         >
           <el-option
             v-for="dept in departments"
@@ -54,6 +66,7 @@
           v-model="formData.role_id" 
           placeholder="请选择职位"
           clearable
+          style="width: 100%"
         >
           <el-option
             v-for="role in roles"
@@ -253,7 +266,7 @@ const validateForm = (): boolean => {
   }
   
   if (!formData.value.grade.trim()) {
-    ElMessage.error('年级不能为空')
+    ElMessage.error('请选择年级')
     return false
   }
   

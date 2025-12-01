@@ -22,6 +22,22 @@
         </el-input>
         
         <el-select 
+          v-model="selectedGrade" 
+          placeholder="选择年级" 
+          style="width: 150px; margin-right: 10px;"
+          @change="handleFilter"
+          clearable
+        >
+          <el-option label="所有年级" value=""></el-option>
+          <el-option label="2020级" value="2020级"></el-option>
+          <el-option label="2021级" value="2021级"></el-option>
+          <el-option label="2022级" value="2022级"></el-option>
+          <el-option label="2023级" value="2023级"></el-option>
+          <el-option label="2024级" value="2024级"></el-option>
+          <el-option label="2025级" value="2025级"></el-option>
+        </el-select>
+        
+        <el-select 
           v-model="selectedDepartment" 
           placeholder="选择部门" 
           style="width: 150px; margin-right: 10px;"
@@ -92,10 +108,10 @@
             {{ row.department_name || '无部门' }}
           </template>
         </el-table-column>
-        <el-table-column prop="role_title" label="职位" width="130" sortable>  <!-- 修复：改为 role_title -->
+        <el-table-column prop="role_title" label="职位" width="130" sortable>
           <template #default="{ row }">
-            <el-tag :type="getRoleTagType(row.role_title)" effect="dark">  <!-- 修复：改为 role_title -->
-              {{ row.role_title }}  <!-- 修复：改为 role_title -->
+            <el-tag :type="getRoleTagType(row.role_title)" effect="dark">
+              {{ row.role_title }}
             </el-tag>
           </template>
         </el-table-column>
@@ -157,6 +173,7 @@ const memberStore = useMemberStore();
 
 const loading = ref(false);
 const searchKeyword = ref('');
+const selectedGrade = ref('');
 const selectedDepartment = ref('');
 const selectedRole = ref('');
 const currentPage = ref(1);
@@ -187,6 +204,13 @@ const filteredMembers = computed(() => {
     );
   }
 
+  // 应用年级筛选
+  if (selectedGrade.value) {
+    members = members.filter(member => 
+      member.grade === selectedGrade.value
+    );
+  }
+
   // 应用部门筛选
   if (selectedDepartment.value) {
     if (selectedDepartment.value === '0') {
@@ -206,9 +230,9 @@ const filteredMembers = computed(() => {
     );
   }
 
-  // 按职位排序，然后按姓名排序 - 修复：使用 role_title
+  // 按职位排序，然后按姓名排序
   return members.sort((a, b) => {
-    const roleCompare = (roleOrder[a.role_title] || 6) - (roleOrder[b.role_title] || 6);  // 修复：改为 role_title
+    const roleCompare = (roleOrder[a.role_title] || 6) - (roleOrder[b.role_title] || 6);
     if (roleCompare !== 0) return roleCompare;
     return a.name.localeCompare(b.name);
   });
@@ -229,9 +253,9 @@ const roleCounts = computed(() => {
     member: 0
   };
 
-  // 使用所有成员计算角色统计，不受筛选影响 - 修复：使用 role_title
+  // 使用所有成员计算角色统计，不受筛选影响
   memberStore.members.forEach(member => {
-    switch (member.role_title) {  // 修复：改为 role_title
+    switch (member.role_title) {
       case '站长':
         counts.stationMaster++;
         break;
@@ -255,7 +279,7 @@ const roleCounts = computed(() => {
   return counts;
 });
 
-// 方法 - 修复：使用 role_title
+// 方法
 const getRoleTagType = (role: string) => {
   switch (role) {
     case '站长':
@@ -328,7 +352,7 @@ const loadMembers = async () => {
 };
 
 // 监听器
-watch([searchKeyword, selectedDepartment, selectedRole], () => {
+watch([searchKeyword, selectedGrade, selectedDepartment, selectedRole], () => {
   currentPage.value = 1;
 });
 
