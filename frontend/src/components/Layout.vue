@@ -12,7 +12,7 @@
         text-color="#bfcbd9"
         active-text-color="#409EFF"
       >
-        <el-menu-item index="/">
+        <el-menu-item index="/dashboard">
           <el-icon><Odometer /></el-icon>
           <span>仪表盘</span>
         </el-menu-item>
@@ -35,7 +35,7 @@
       <el-header class="header">
         <div class="header-left">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>{{ currentRouteName }}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -82,12 +82,20 @@ const userStore = useUserStore()
 
 const currentRouteName = computed(() => {
   const routeMap: any = {
-    '/': '仪表盘',
+    '/dashboard': '仪表盘',
     '/members': '成员管理',
     '/departments': '部门管理',
     '/performance': '绩效管理'
   }
-  return routeMap[route.path] || '未知页面'
+  
+  // 支持动态路径，如 /members/123
+  for (const key in routeMap) {
+    if (route.path.startsWith(key)) {
+      return routeMap[key]
+    }
+  }
+  
+  return '未知页面'
 })
 
 const handleCommand = async (command: string) => {

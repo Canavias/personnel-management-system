@@ -38,7 +38,7 @@
               <i class="el-icon-office-building"></i>
             </div>
             <div class="stat-info">
-              <div class="stat-value">6</div>
+              <div class="stat-value">{{ departmentCount }}</div>
               <div class="stat-label">部门数量</div>
             </div>
           </div>
@@ -76,17 +76,32 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useMemberStore } from '@/stores/member'
+import { useDepartmentStore } from '@/stores/department'
 
 const memberStore = useMemberStore()
+const departmentStore = useDepartmentStore()
 const memberCount = ref(0)
+const departmentCount = ref(0)
 
 onMounted(async () => {
   try {
+    // 加载成员数据
     await memberStore.fetchMembers()
     memberCount.value = memberStore.members.length
+    
+    // 加载部门数据
+    await departmentStore.fetchDepartments()
+    departmentCount.value = departmentStore.departments.length
+    
+    console.log('📊 仪表盘数据:', {
+      成员数: memberCount.value,
+      部门数: departmentCount.value,
+      部门列表: departmentStore.departments.map(d => d.name)
+    })
   } catch (error) {
-    console.error('加载成员数据失败:', error)
+    console.error('加载仪表盘数据失败:', error)
     memberCount.value = 0
+    departmentCount.value = 0
   }
 })
 </script>
@@ -144,7 +159,7 @@ onMounted(async () => {
 }
 
 .stat-label {
-  color: #909399;
+  color: #606266;
   font-size: 14px;
 }
 
