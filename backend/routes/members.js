@@ -67,6 +67,7 @@ router.put('/:id', async (req, res) => {
 
     // 转换性别
     const genderValue = convertGenderToValue(gender);
+    console.log('🔍 转换后的性别值:', genderValue);
 
     // 站长逻辑
     let actualDepartmentId = department_id;
@@ -175,15 +176,17 @@ router.delete('/:id', async (req, res) => {
 
 // 添加成员
 router.post('/', async (req, res) => {
+    console.log('🔍 添加成员请求:', JSON.stringify(req.body));
   try {
     const { name, gender, grade, student_id, phone, email, department_id, role_id } = req.body;
     
     const genderValue = convertGenderToValue(gender);
+    console.log('🔍 转换后的性别值:', genderValue);
     
     const [result] = await pool.execute(
       `INSERT INTO members (name, gender, grade, student_id, phone, email, department_id, role_id) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [name, genderValue, grade, student_id, phone, email, department_id, role_id]
+      [name, genderValue, grade, student_id === undefined ? null : student_id, phone === undefined ? null : phone, email === undefined ? null : email, department_id === undefined ? null : department_id, role_id === undefined ? null : role_id]
     );
     
     // 返回新创建的成员完整数据
