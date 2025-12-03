@@ -3,6 +3,7 @@
     <div class="header">
       <h1>成员管理</h1>
       <el-button type="primary" @click="handleAddMember">
+import { sortMembers } from '@/utils/sorting';
         添加成员
       </el-button>
     </div>
@@ -22,6 +23,22 @@
         </el-input>
         
         <el-select 
+          v-model="selectedGrade" 
+          placeholder="选择年级" 
+          style="width: 150px; margin-right: 10px;"
+          @change="handleFilter"
+          clearable
+        >
+          <el-option label="所有年级" value=""></el-option>
+          <el-option label="2020级" value="2020级"></el-option>
+          <el-option label="2021级" value="2021级"></el-option>
+          <el-option label="2022级" value="2022级"></el-option>
+          <el-option label="2023级" value="2023级"></el-option>
+          <el-option label="2024级" value="2024级"></el-option>
+          <el-option label="2025级" value="2025级"></el-option>
+        </el-select>
+        
+        <el-select 
           v-model="selectedDepartment" 
           placeholder="选择部门" 
           style="width: 150px; margin-right: 10px;"
@@ -34,8 +51,8 @@
           <el-option label="Web部" value="3"></el-option>
           <el-option label="UI部" value="4"></el-option>
           <el-option label="App部" value="5"></el-option>
-          <el-option label="iOS部" value="7"></el-option>
-          <el-option label="精英培优班" value="6"></el-option>
+          <el-option label="iOS部" value="6"></el-option>
+          <el-option label="精英培优班" value="7"></el-option>
         </el-select>
 
         <el-select 
@@ -92,10 +109,10 @@
             {{ row.department_name || '无部门' }}
           </template>
         </el-table-column>
-        <el-table-column prop="role_title" label="职位" width="130" sortable>  <!-- 修复：改为 role_title -->
+        <el-table-column prop="role_title" label="职位" width="130" sortable>
           <template #default="{ row }">
-            <el-tag :type="getRoleTagType(row.role_title)" effect="dark">  <!-- 修复：改为 role_title -->
-              {{ row.role_title }}  <!-- 修复：改为 role_title -->
+            <el-tag :type="getRoleTagType(row.role_title)" effect="dark">
+              {{ row.role_title }}
             </el-tag>
           </template>
         </el-table-column>
@@ -139,8 +156,8 @@
     <!-- 添加/编辑成员对话框 -->
     <MemberDialog
       v-model="dialogVisible"
-      :editData="editingMember"
-      
+      :member="editingMember"
+      :is-edit="isEdit"
       @success="handleDialogSuccess"
     />
   </div>
@@ -157,6 +174,7 @@ const memberStore = useMemberStore();
 
 const loading = ref(false);
 const searchKeyword = ref('');
+const selectedGrade = ref('');
 const selectedDepartment = ref('');
 const selectedRole = ref('');
 const currentPage = ref(1);
@@ -187,6 +205,13 @@ const filteredMembers = computed(() => {
     );
   }
 
+  // 应用年级筛选
+  if (selectedGrade.value) {
+    members = members.filter(member => 
+      member.grade === selectedGrade.value
+    );
+  }
+
   // 应用部门筛选
   if (selectedDepartment.value) {
     if (selectedDepartment.value === '0') {
@@ -206,170 +231,6 @@ const filteredMembers = computed(() => {
     );
   }
 
-  // 按职位排序，然后按姓名排序 - 修复：使用 role_title
-  return members.sort((a, b) => {
-    const roleCompare = (roleOrder[a.role_title] || 6) - (roleOrder[b.role_title] || 6);  // 修复：改为 role_title
-    if (roleCompare !== 0) return roleCompare;
-    return a.name.localeCompare(b.name);
-  });
+  // 使用新的排序函数进行排序
+  return sortMembers(members);
 });
-
-const paginatedMembers = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return filteredMembers.value.slice(start, end);
-});
-
-const roleCounts = computed(() => {
-  const counts = {
-    stationMaster: 0,
-    minister: 0,
-    viceMinister: 0,
-    responsiblePerson: 0,
-    member: 0
-  };
-
-  // 使用所有成员计算角色统计，不受筛选影响 - 修复：使用 role_title
-  memberStore.members.forEach(member => {
-    switch (member.role_title) {  // 修复：改为 role_title
-      case '站长':
-        counts.stationMaster++;
-        break;
-      case '部长':
-        counts.minister++;
-        break;
-      case '副部长':
-        counts.viceMinister++;
-        break;
-      case '负责人':
-        counts.responsiblePerson++;
-        break;
-      case '成员':
-        counts.member++;
-        break;
-      default:
-        counts.member++;
-    }
-  });
-
-  return counts;
-});
-
-// 方法 - 修复：使用 role_title
-const getRoleTagType = (role: string) => {
-  switch (role) {
-    case '站长':
-      return 'danger';
-    case '部长':
-      return 'warning';
-    case '副部长':
-      return 'success';
-    case '负责人':
-      return 'primary';
-    case '成员':
-      return 'info';
-    default:
-      return 'info';
-  }
-};
-
-const handleSearch = () => {
-  currentPage.value = 1;
-};
-
-const handleFilter = () => {
-  currentPage.value = 1;
-};
-
-const handleAddMember = () => {
-  editingMember.value = null;
-  isEdit.value = false;
-  dialogVisible.value = true;
-};
-
-const handleEditMember = (member: any) => {
-  editingMember.value = { ...member };
-  isEdit.value = true;
-  dialogVisible.value = true;
-};
-
-const handleDeleteMember = async (id: number) => {
-  try {
-    await ElMessageBox.confirm(
-      '确定要删除这个成员吗？',
-      '警告',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    );
-
-    await memberStore.deleteMember(id);
-  } catch (error) {
-    // 用户取消删除
-  }
-};
-
-const handleDialogSuccess = () => {
-  dialogVisible.value = false;
-};
-
-const loadMembers = async () => {
-  loading.value = true;
-  try {
-    await memberStore.fetchMembers();
-  } catch (error) {
-    console.error('加载数据失败:', error);
-    ElMessage.error('加载成员数据失败');
-  } finally {
-    loading.value = false;
-  }
-};
-
-// 监听器
-watch([searchKeyword, selectedDepartment, selectedRole], () => {
-  currentPage.value = 1;
-});
-
-// 生命周期
-onMounted(() => {
-  loadMembers();
-});
-</script>
-
-<style scoped>
-.members {
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.filter-card {
-  margin-bottom: 20px;
-}
-
-.filter-row {
-  display: flex;
-  align-items: center;
-}
-
-.stats-row {
-  margin-bottom: 20px;
-}
-
-.table-card {
-  margin-top: 20px;
-}
-
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-</style>

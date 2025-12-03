@@ -1,125 +1,214 @@
 /**
  * 成员排序工具
- * 排序规则：
- * 1. 站长始终置顶
- * 2. 非站长按：部门优先级 > 职位权重 > 姓名首字母排序
+ * 支持两种排序模式：
+ * 1. 部门优先排序（同部门成员在一起）
+ * 2. 职位优先排序（同职位成员在一起）
  */
 
-// 部门权重映射（值越小优先级越高）
-// 顺序：程序 > web > app > 游戏 > ios > 精英 > UI
+// 部门权重 - 确保同部门在一起，精英培优班在最后
 const departmentWeights = {
-  '程序部': 1,      // 程序
-  'Web部': 2,       // web
-  'App部': 3,       // app
-  '游戏部': 4,      // 游戏
-  'iOS部': 5,       // ios（你说ios是7，精英培优班是6，但根据需求ios应该在精英前面）
-  '精英培优班': 6,  // 精英
-  'UI部': 7,        // 需求中未提及
-  'NULL': 8,        // 无部门（如站长）
+  // 普通部门
+  '程序部': 1,
+  '游戏部': 1,
+  'Web部': 1,
+  'iOS部': 1,
+  'App部': 1,
+  'UI部': 1,
+  // 特殊部门：精英培优班在最后
+  '精英培优班': 9,
+  // 无部门（站长）
+  '无部门': 0,
+  'NULL': 0,
+  null: 0,
+  undefined: 0
 };
 
-// 职位权重映射（使用数据库中的level字段）
+// 职位权重（值越大优先级越高）
 const roleWeights = {
   '站长': 100,
   '部长': 90,
   '副部长': 80,
   '负责人': 70,
-  '成员': 60,
+  '成员': 60
 };
 
 /**
  * 获取部门权重
- * @param {string} departmentName - 部门名称
- * @returns {number} 权重值
  */
 function getDepartmentWeight(departmentName) {
-  if (!departmentName) return departmentWeights['NULL'];
-  return departmentWeights[departmentName] || 99; // 未知部门权重最低
+  if (!departmentName || departmentName === '无部门') {
+    return departmentWeights['无部门'];
+  }
+  const weight = departmentWeights[departmentName];
+  if (weight === undefined) {
+    console.warn('未知部门名称，使用默认权重:', departmentName);
+  }
+  return weight || 5; // 默认权重
 }
 
 /**
  * 获取职位权重
- * @param {string} roleTitle - 职位名称
- * @returns {number} 权重值
  */
 function getRoleWeight(roleTitle) {
-  return roleWeights[roleTitle] || 0;
+  return roleWeights[roleTitle] || 60;
 }
 
 /**
- * 中文姓名首字母排序比较
- * @param {string} a - 姓名A
- * @param {string} b - 姓名B
- * @returns {number} 比较结果
+ * 部门优先排序
+ * 排序：站长 > 部门（同部门在一起）> 职位 > 姓名
  */
-function compareChineseNames(a, b) {
-  // 使用localeCompare进行中文排序
-  return a.localeCompare(b, 'zh-CN');
-}
-
-/**
- * 成员排序主函数
- * @param {Array} members - 成员数组
- * @returns {Array} 排序后的成员数组
- */
-export function sortMembers(members) {
+export function sortByDepartmentFirst(members) {
   if (!members || !Array.isArray(members)) return [];
   
-  // 创建副本以避免修改原数组
   const sortedMembers = [...members];
   
   sortedMembers.sort((a, b) => {
-    // 规则1：站长始终在最前面
-    const isStationMasterA = a.role_title === '站长';
-    const isStationMasterB = b.role_title === '站长';
-    
-    if (isStationMasterA && !isStationMasterB) return -1;
-    if (!isStationMasterA && isStationMasterB) return 1;
-    
-    // 如果都是站长，按ID排序（理论上只有一个站长）
-    if (isStationMasterA && isStationMasterB) {
-      return a.id - b.id;
+    // 1. 站长优先
+    if (a.role_title === '站长' && b.role_title !== '站长') return -1;
+    if (a.role_title !== '站长' && b.role_title === '站长') return 1;
+    if (a.role_title === '站长' && b.role_title === '站长') {
+      return a.name.localeCompare(b.name, 'zh-CN');
     }
     
-    // 规则2：按部门权重排序
-    const deptWeightA = getDepartmentWeight(a.department_name);
-    const deptWeightB = getDepartmentWeight(b.department_name);
+    // 2. 按部门分组（确保同部门在一起）
+    const deptNameA = a.department_name || '无部门';
+    const deptNameB = b.department_name || '无部门';
     
-    if (deptWeightA !== deptWeightB) {
-      return deptWeightA - deptWeightB;
+    // 如果部门不同，按部门排序
+    if (deptNameA !== deptNameB) {
+      // 先按部门权重
+      const deptWeightA = getDepartmentWeight(deptNameA);
+      const deptWeightB = getDepartmentWeight(deptNameB);
+      if (deptWeightA !== deptWeightB) {
+        return deptWeightA - deptWeightB;
+      }
+      // 再按部门名称字母排序
+      return deptNameA.localeCompare(deptNameB, 'zh-CN');
     }
     
-    // 规则3：同部门内按职位权重排序
+    // 3. 同部门内按职位排序
     const roleWeightA = getRoleWeight(a.role_title);
     const roleWeightB = getRoleWeight(b.role_title);
-    
     if (roleWeightA !== roleWeightB) {
-      // 职位权重大的在前（站长已处理，这里部长>副部长>...）
-      return roleWeightB - roleWeightA;
+      return roleWeightB - roleWeightA; // 数值大的排在前面
     }
     
-    // 规则4：同部门同职位按姓名首字母排序
-    return compareChineseNames(a.name, b.name);
+    // 4. 同部门同职位按姓名排序
+    return a.name.localeCompare(b.name, 'zh-CN');
   });
   
   return sortedMembers;
 }
 
 /**
- * 获取排序说明文本
- * @returns {string} 排序规则说明
+ * 职位优先排序
+ * 排序：站长 > 职位（同职位在一起）> 部门 > 姓名
  */
-export function getSortingDescription() {
-  return `当前排序规则：
-  1. 站长始终置顶
-  2. 部门优先级：程序部 > Web部 > App部 > 游戏部 > iOS部 > 精英培优班 > UI部
-  3. 同部门内职位优先级：站长 > 部长 > 副部长 > 负责人 > 成员
-  4. 同部门同职位按姓名首字母排序`;
+export function sortByRoleFirst(members) {
+  if (!members || !Array.isArray(members)) return [];
+  
+  const sortedMembers = [...members];
+  
+  sortedMembers.sort((a, b) => {
+    // 1. 站长优先
+    if (a.role_title === '站长' && b.role_title !== '站长') return -1;
+    if (a.role_title !== '站长' && b.role_title === '站长') return 1;
+    if (a.role_title === '站长' && b.role_title === '站长') {
+      return a.name.localeCompare(b.name, 'zh-CN');
+    }
+    
+    // 2. 按职位分组（确保同职位在一起）
+    const roleA = a.role_title;
+    const roleB = b.role_title;
+    
+    // 如果职位不同，按职位排序
+    if (roleA !== roleB) {
+      const roleWeightA = getRoleWeight(roleA);
+      const roleWeightB = getRoleWeight(roleB);
+      return roleWeightB - roleWeightA; // 数值大的排在前面
+    }
+    
+    // 3. 同职位内按部门排序
+    const deptNameA = a.department_name || '无部门';
+    const deptNameB = b.department_name || '无部门';
+    
+    if (deptNameA !== deptNameB) {
+      const deptWeightA = getDepartmentWeight(deptNameA);
+      const deptWeightB = getDepartmentWeight(deptNameB);
+      if (deptWeightA !== deptWeightB) {
+        return deptWeightA - deptWeightB;
+      }
+      return deptNameA.localeCompare(deptNameB, 'zh-CN');
+    }
+    
+    // 4. 同职位同部门按姓名排序
+    return a.name.localeCompare(b.name, 'zh-CN');
+  });
+  
+  return sortedMembers;
+}
+
+/**
+ * 根据模式排序
+ */
+export function sortMembers(members, mode = 'department') {
+  console.log(`执行${mode}排序，成员数量:`, members?.length || 0);
+  
+  if (mode === 'role') {
+    const result = sortByRoleFirst(members);
+    console.log('职位优先排序结果:');
+    result.slice(0, 10).forEach((m, i) => {
+      console.log(`${i+1}. ${m.name} - ${m.department_name || '无部门'} - ${m.role_title}`);
+    });
+    return result;
+  }
+  
+  const result = sortByDepartmentFirst(members);
+  console.log('部门优先排序结果:');
+  result.slice(0, 10).forEach((m, i) => {
+    console.log(`${i+1}. ${m.name} - ${m.department_name || '无部门'} - ${m.role_title}`);
+  });
+  return result;
+}
+
+/**
+ * 获取排序说明
+ */
+export function getSortingDescription(mode = 'department') {
+  if (mode === 'role') {
+    return `职位优先排序：同职位成员在一起，职位顺序：站长 > 部长 > 副部长 > 负责人 > 成员`;
+  }
+  
+  return `部门优先排序：同部门成员在一起，精英培优班在最后`;
+}
+
+/**
+ * 调试函数：查看部门分组
+ */
+export function debugDepartmentGrouping(members) {
+  console.log('=== 部门分组调试 ===');
+  
+  const groups = {};
+  members.forEach(m => {
+    const dept = m.department_name || '无部门';
+    if (!groups[dept]) {
+      groups[dept] = [];
+    }
+    groups[dept].push(m);
+  });
+  
+  Object.keys(groups).forEach(dept => {
+    console.log(`部门【${dept}】有 ${groups[dept].length} 个成员:`);
+    groups[dept].forEach(m => {
+      console.log(`  ${m.name} - ${m.role_title}`);
+    });
+  });
 }
 
 export default {
   sortMembers,
+  sortByDepartmentFirst,
+  sortByRoleFirst,
   getSortingDescription,
-  departmentWeights,
-  roleWeights
+  debugDepartmentGrouping
 };
