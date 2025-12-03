@@ -3,21 +3,8 @@
     <div class="header">
       <h1>成员管理</h1>
       <div class="header-controls">
-        <!-- 导出按钮 -->
-        <el-button-group style="margin-right: 10px;">
-          <el-button type="success" @click="handleExportAll">
-            <el-icon><Download /></el-icon>
-            导出全部
-          </el-button>
-          <el-button type="success" @click="handleExportCurrent">
-            <el-icon><Download /></el-icon>
-            导出当前
-          </el-button>
-        </el-button-group>
-        
         <!-- 添加成员按钮 -->
         <el-button type="primary" @click="handleAddMember">
-          <el-icon><Plus /></el-icon>
           添加成员
         </el-button>
       </div>
@@ -125,18 +112,6 @@
       </el-col>
     </el-row>
 
-    <!-- 导出提示 -->
-    <el-alert 
-      v-if="showExportHint"
-      title="💡 导出提示"
-      type="info"
-      description="支持两种导出模式：1) 导出全部成员 2) 导出当前筛选和排序结果"
-      show-icon
-      closable
-      @close="showExportHint = false"
-      style="margin-bottom: 20px;"
-    />
-
     <!-- 成员表格 -->
     <el-card class="table-card">
       <el-table 
@@ -209,12 +184,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { Search, Download, Plus } from '@element-plus/icons-vue';
+import { Search } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useMemberStore } from '@/stores/member';
 import MemberDialog from '@/components/MemberDialog.vue';
 import { sortMembers, getSortingDescription } from '@/utils/sorting';
-import { exportMembersToExcel } from '@/utils/exportExcel';
 
 const memberStore = useMemberStore();
 
@@ -229,7 +203,6 @@ const dialogVisible = ref(false);
 const editingMember = ref<any>(null);
 const isEdit = ref(false);
 const sortMode = ref('department');
-const showExportHint = ref(true);
 
 const sortingDescription = computed(() => getSortingDescription(sortMode.value));
 
@@ -317,85 +290,6 @@ const roleCounts = computed(() => {
   return counts;
 });
 
-// 导出功能
-const handleExportAll = async () => {
-  try {
-    loading.value = true;
-    
-    // 获取所有成员数据（当前排序和筛选后）
-    const dataToExport = sortedMembers.value;
-    
-    if (dataToExport.length === 0) {
-      ElMessage.warning('没有数据可导出');
-      return;
-    }
-    
-    // 确定文件名 - 使用工作室名称
-    let filename = '爱特工作室成员列表';
-    if (searchKeyword.value) {
-      filename += `_搜索_${searchKeyword.value}`;
-    }
-    if (selectedDepartment.value) {
-      const deptName = document.querySelector(`[value="${selectedDepartment.value}"]`)?.textContent || '';
-      filename += `_${deptName}`;
-    }
-    if (selectedRole.value) {
-      const roleName = document.querySelector(`[value="${selectedRole.value}"]`)?.textContent || '';
-      filename += `_${roleName}`;
-    }
-    
-    // 执行导出
-    const success = exportMembersToExcel(dataToExport, filename);
-    
-    if (success) {
-      ElMessage.success(`成功导出 ${dataToExport.length} 条数据`);
-    } else {
-      ElMessage.error('导出失败，请检查控制台');
-    }
-    
-  } catch (error) {
-    console.error('导出出错:', error);
-    ElMessage.error('导出失败: ' + error.message);
-  } finally {
-    loading.value = false;
-  }
-};
-
-const handleExportCurrent = async () => {
-  try {
-    loading.value = true;
-    
-    // 获取当前页数据
-    const dataToExport = paginatedMembers.value;
-    
-    if (dataToExport.length === 0) {
-      ElMessage.warning('当前页没有数据可导出');
-      return;
-    }
-    
-    // 确定文件名 - 使用工作室名称
-    let filename = `爱特工作室成员列表_第${currentPage.value}页`;
-    if (searchKeyword.value || selectedDepartment.value || selectedRole.value || selectedGrade.value) {
-      filename += '_筛选后';
-    }
-    
-    // 执行导出
-    const success = exportMembersToExcel(dataToExport, filename);
-    
-    if (success) {
-      ElMessage.success(`成功导出当前页 ${dataToExport.length} 条数据`);
-    } else {
-      ElMessage.error('导出失败，请检查控制台');
-    }
-    
-  } catch (error) {
-    console.error('导出出错:', error);
-    ElMessage.error('导出失败: ' + error.message);
-  } finally {
-    loading.value = false;
-  }
-};
-
 const handleSearch = () => {
   currentPage.value = 1;
 };
@@ -407,6 +301,13 @@ const handleFilter = () => {
 const handleSortChange = () => {
   currentPage.value = 1;
   ElMessage.success(`已切换到${sortMode.value === 'department' ? '部门优先' : '职位优先'}排序`);
+  
+  // 调试输出
+  console.log('当前排序模式:', sortMode.value);
+  console.log('排序后前10个成员:');
+  sortedMembers.value.slice(0, 10).forEach((m, i) => {
+    console.log(`${i+1}. ${m.name} - ${m.department_name || '无部门'} - ${m.role_title}`);
+  });
 };
 
 const handleAddMember = () => {
@@ -479,7 +380,6 @@ onMounted(() => {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .sort-control-card {

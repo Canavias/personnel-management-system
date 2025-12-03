@@ -1,0 +1,270 @@
+/**
+ * Excel导出工具
+ * 支持将数据导出为Excel文件
+ */
+
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
+/**
+ * 导出成员数据到Excel
+ * @param {Array} data - 成员数据数组
+ * @param {string} filename - 文件名（不需要.xlsx后缀）
+ * @param {Object} options - 导出选项
+ */
+export function exportMembersToExcel(data, filename = '成员列表', options = {}) {
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    console.error('导出失败：数据为空或不是数组');
+    return false;
+  }
+
+  try {
+    console.log(`开始导出Excel，数据量: ${data.length}条`);
+    
+    // 准备工作表数据
+    const worksheetData = prepareWorksheetData(data, options);
+    
+    // 创建工作簿和工作表
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    
+    // 设置列宽（序号列宽7，其他自适应）
+    const colWidths = calculateColumnWidths(worksheetData);
+    worksheet['!cols'] = colWidths;
+    
+    // 设置表头样式（合并单元格）
+    if (worksheetData.length > 0) {
+      // 合并第一行（标题）
+      worksheet['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } }, // 标题跨8列
+        { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } }, // 时间跨8列
+      ];
+    }
+    
+    // 创建工作簿
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, '成员列表');
+    
+    // 生成Excel文件
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+    
+    // 创建Blob并下载
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    
+    // 确保文件名中没有"社团"，统一改为"工作室"
+    const cleanFilename = filename.replace(/社团/g, '工作室');
+    const fullFilename = `${cleanFilename}_${formatDate(new Date())}.xlsx`;
+    saveAs(blob, fullFilename);
+    
+    console.log(`✅ Excel导出成功: ${fullFilename}`);
+    return true;
+    
+  } catch (error) {
+    console.error('❌ Excel导出失败:', error);
+    return false;
+  }
+}
+
+/**
+ * 准备工作表数据
+ */
+function prepareWorksheetData(data, options) {
+  // 表头定义 - 爱特工作室成员列表，去掉学号和加入时间
+  const headers = [
+    ['爱特工作室成员列表'],
+    [`导出时间: ${formatDate(new Date(), 'full')}`],
+    [], // 空行
+    ['序号', '姓名', '性别', '年级', '部门', '职位', '电话', '邮箱']
+  ];
+  
+  // 数据处理 - 只保留需要的字段
+  const rows = data.map((item, index) => {
+    return [
+      index + 1,
+      item.name || '',
+      item.gender || '',
+      item.grade || '',
+      item.department_name || '无部门',
+      item.role_title || '',
+      item.phone || '未填写',
+      item.email || '未填写'
+    ];
+  });
+  
+  return [...headers, ...rows];
+}
+
+/**
+ * 计算列宽
+ * 序号列宽固定为7，其他列自适应
+ */
+function calculateColumnWidths(data) {
+  if (!data || data.length === 0) return [];
+  
+  // 初始化列宽数组
+  const colCount = data[0] ? data[0].length : 0;
+  const widths = new Array(colCount).fill(10); // 默认宽度
+  
+  // 第一列（序号）固定宽度为7
+  widths[0] = 7;
+  
+  // 计算其他列的最大宽度（从第二列开始）
+  data.forEach(row => {
+    for (let colIndex = 1; colIndex < row.length; colIndex++) {
+      const cell = row[colIndex];
+      if (cell) {
+        const cellLength = String(cell).length;
+        // 中文按2个字符算，英文按1个字符算
+        const chineseCount = (String(cell).match(/[\u4e00-\u9fa5]/g) || []).length;
+        const effectiveLength = cellLength + chineseCount;
+        if (effectiveLength > widths[colIndex]) {
+          widths[colIndex] = Math.min(effectiveLength + 2, 50); // 最大50字符
+        }
+      }
+    }
+  });
+  
+  return widths.map((width, index) => ({ 
+    width,
+    // 第一列（序号）居中显示
+    ...(index === 0 ? { alignment: { horizontal: 'center' } } : {})
+  }));
+}
+
+/**
+ * 格式化日期
+ */
+function formatDate(date, type = 'simple') {
+  if (!date) return '';
+  
+  const d = new Date(date);
+  
+  if (type === 'full') {
+    return d.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  }
+  
+  // 简单格式：YYYY-MM-DD
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * 导出当前页面显示的成员（分页数据）
+ */
+export function exportCurrentPageToExcel(paginatedData, totalData, filename = '当前页成员') {
+  const hasFilters = false; // 这里可以添加筛选状态检查
+  
+  if (hasFilters) {
+    return exportMembersToExcel(paginatedData, filename, {
+      note: '当前页数据（已应用筛选和排序）'
+    });
+  } else {
+    return exportMembersToExcel(totalData, filename, {
+      note: '全部成员数据'
+    });
+  }
+}
+
+/**
+ * 导出统计数据
+ */
+export function exportStatisticsToExcel(statistics, filename = '成员统计') {
+  if (!statistics) return false;
+  
+  try {
+    const worksheetData = [
+      ['爱特工作室成员统计报表'],
+      [`统计时间: ${formatDate(new Date(), 'full')}`],
+      [],
+      ['统计项', '数量', '占比'],
+      ['总成员数', statistics.total || 0, '100%'],
+      ['站长', statistics.stationMaster || 0, calculatePercentage(statistics.stationMaster, statistics.total)],
+      ['部长', statistics.minister || 0, calculatePercentage(statistics.minister, statistics.total)],
+      ['副部长', statistics.viceMinister || 0, calculatePercentage(statistics.viceMinister, statistics.total)],
+      ['负责人', statistics.responsiblePerson || 0, calculatePercentage(statistics.responsiblePerson, statistics.total)],
+      ['普通成员', statistics.member || 0, calculatePercentage(statistics.member, statistics.total)],
+      [],
+      ['部门分布统计'],
+      ['部门', '人数', '占比']
+    ];
+    
+    // 如果有部门统计，添加到这里
+    if (statistics.departments) {
+      Object.entries(statistics.departments).forEach(([dept, count]) => {
+        worksheetData.push([
+          dept || '无部门',
+          count,
+          calculatePercentage(count, statistics.total)
+        ]);
+      });
+    }
+    
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    
+    // 设置列宽
+    const colWidths = [
+      { width: 15 }, // 统计项/部门
+      { width: 10 }, // 数量
+      { width: 10 }  // 占比
+    ];
+    worksheet['!cols'] = colWidths;
+    
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, '统计报表');
+    
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    
+    // 确保文件名中没有"社团"，统一改为"工作室"
+    const cleanFilename = filename.replace(/社团/g, '工作室');
+    const fullFilename = `${cleanFilename}_${formatDate(new Date())}.xlsx`;
+    saveAs(blob, fullFilename);
+    
+    console.log(`✅ 统计报表导出成功: ${fullFilename}`);
+    return true;
+    
+  } catch (error) {
+    console.error('❌ 统计报表导出失败:', error);
+    return false;
+  }
+}
+
+/**
+ * 计算百分比
+ */
+function calculatePercentage(part, total) {
+  if (!total || total === 0) return '0%';
+  const percentage = (part / total * 100).toFixed(1);
+  return `${percentage}%`;
+}
+
+// 导出一个工具函数，用于生成标准文件名
+export function generateStudioFilename(baseName = '爱特工作室成员列表') {
+  // 确保基础名称中是"工作室"而不是"社团"
+  const cleanBase = baseName.replace(/社团/g, '工作室');
+  return `${cleanBase}_${formatDate(new Date())}`;
+}
+
+export default {
+  exportMembersToExcel,
+  exportCurrentPageToExcel,
+  exportStatisticsToExcel,
+  generateStudioFilename,
+  formatDate
+};
